@@ -24,7 +24,7 @@ class RegisterController extends Controller
         try {
             Mail::send('mails.account_created', [
                 'details' => [
-                    'name' => $request->name,
+                    'name' => strtoupper($request->name),
                     'email' => $request->email,
                     'password' => $randomPassword,
                 ]
@@ -33,11 +33,13 @@ class RegisterController extends Controller
                     ->subject('Welcome to Ordering & Billing System');
             });
 
-            // User::create([
-            //     'name' => $request->name,
-            //     'email' => $request->email,
-            //     'password' => Hash::make($randomPassword),
-            // ]);
+            User::create([
+                'name' => strtoupper($request->name),
+                'email' => $request->email,
+                'password' => Hash::make($randomPassword),
+                'is_new' => true,
+                'status' => 'active',
+            ]);
 
             return redirect('/')->with('success', 'Account created! Password has been sent to your email.');
         } catch (Exception $e) {

@@ -3,4 +3,4 @@
         const registerForm = document.getElementById('register-form');
         loginForm.classList.toggle('hidden');
         registerForm.classList.toggle('hidden');
-    }
+    }z

@@ -33,7 +33,7 @@
             <div class="w-full max-w-md">
 
                 <!-- Login Form -->
-                <form id="login-form" action="" method="POST" class="">
+                <form id="login-form" action="{{ route('login.store') }}" method="POST" class="">
                     @csrf
                     <h2 class="text-3xl font-bold mb-6 text-center">Login to Your Account</h2>
 
@@ -60,7 +60,7 @@
                     <h2 class="text-3xl font-bold mb-6 text-center">Create an Account</h2>
 
                     <input type="text" name="name" placeholder="Full Name"
-                        class="w-full p-4 mb-3 border border-gray-300 rounded text-black" value="{{ old('name') }}"
+                        class="w-full p-4 mb-3 border border-gray-300 rounded text-black uppercase" value="{{ old('name') }}"
                         required>
                     @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
 
