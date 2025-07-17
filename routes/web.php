@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\admin\LoginController;
-use App\Http\Controllers\admin\RegisterController;
+use App\Http\Controllers\admin\{AdministratorController,LoginController,RegisterController,SettingsController};
+use App\Http\Controllers\users\CustomerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +19,10 @@ Route::get('/', function () {
     return view('home.index');
 })->name('home');
 
+Route::get('/login', function () {
+    return view('home.index');
+})->name('login');
+
 /*
 |--------------------------------------------------------------------------
 | Guest Routes (Unauthenticated)
@@ -26,40 +30,52 @@ Route::get('/', function () {
 */
 Route::middleware('guest')->group(function () {
     Route::post('/login', [LoginController::class, 'login'])->name('login.store');
-    // Route::post('/login', [LoginController::class, 'login']);
-
     Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
-    // Route::post('/register', [RegisterController::class, 'register']);
 });
 
 /*
 |--------------------------------------------------------------------------
-| Onboarding Route for New Users (optional, if using is_new flag)
-|--------------------------------------------------------------------------
-*/
-Route::middleware(['auth', 'is_new'])->group(function () {
-    // Route::get('/onboarding', [OnboardingController::class, 'index'])->name('onboarding');
-});
-
-/*
-|--------------------------------------------------------------------------
-| Role-Based Routes
+| Admin
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'role:administrator'])->group(function () {
-    // Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin', [AdministratorController::class, 'index'])->name('administrator.dashboard');
+
+    //Settings
+    Route::post('/password/update', [SettingsController::class, 'passwordUpdate'])->name('password.update');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Rider
+|--------------------------------------------------------------------------
+*/
 
 Route::middleware(['auth', 'role:rider'])->group(function () {
     // Route::get('/rider', [RiderController::class, 'index'])->name('rider.dashboard');
 });
 
+/*
+|--------------------------------------------------------------------------
+| Cashier
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware(['auth', 'role:cashier'])->group(function () {
     // Route::get('/cashier', [CashierController::class, 'index'])->name('cashier.dashboard');
 });
 
+/*
+|--------------------------------------------------------------------------
+| Customer
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware(['auth', 'role:customer'])->group(function () {
-    // Route::get('/customer', [CustomerController::class, 'index'])->name('customer.dashboard');
+    Route::get('/customer', [CustomerController::class, 'index'])->name('customer.dashboard');
+
+    //Settings
+    Route::post('/password/update', [SettingsController::class, 'passwordUpdate'])->name('password.update');
 });
 
 /*
@@ -67,4 +83,4 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 | Logout Route
 |--------------------------------------------------------------------------
 */
-// Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
