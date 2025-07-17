@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\{AdministratorController,LoginController,RegisterController,SettingsController};
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\users\CustomerController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +41,12 @@ Route::middleware('guest')->group(function () {
 */
 Route::middleware(['auth', 'role:administrator'])->group(function () {
     Route::get('/admin', [AdministratorController::class, 'index'])->name('administrator.dashboard');
+
+    //Product
+    Route::get('/product', [ProductController::class, 'index'])->name('product.dashboard');
+    Route::post('/product-store', [ProductController::class, 'store'])->name('product.store');
+    Route::post('/product-update', [ProductController::class, 'update'])->name('product.update');
+    Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
 
     //Settings
     Route::post('/password/update', [SettingsController::class, 'passwordUpdate'])->name('password.update');

@@ -10,6 +10,6 @@ class AdministratorController extends Controller
 {
         public function index(){
         $users = User::role('customer')->get();
-        return view("users.customers.index", compact("users"));
+        return view("admin.index", compact("users"));
     }
 }

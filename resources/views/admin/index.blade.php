@@ -14,6 +14,7 @@
 @section('content')
 <div class="w-full h-full">
     @include('partials.admin_navbar')
+    @include('partials.admin_sidebar')
     <h1 class="text-5xl">NIGGA</h1>
     @if (auth()->check() && auth()->user()->is_new)
         @include('settings.change-password')

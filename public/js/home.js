@@ -30,3 +30,26 @@
             `;
         }
     }
+
+        const toggleBtn = document.getElementById('toggleSidebar');
+    const sidebar = document.getElementById('sidebar');
+    const textElements = document.querySelectorAll('.sidebar-text');
+
+    let isExpanded = false;
+
+    toggleBtn.addEventListener('click', () => {
+        isExpanded = !isExpanded;
+        sidebar.classList.toggle('w-64');
+        sidebar.classList.toggle('w-16');
+
+        textElements.forEach(el => {
+            if (isExpanded) {
+                el.classList.remove('hidden');
+                el.classList.add('inline');
+            } else {
+                el.classList.remove('inline');
+                el.classList.add('hidden');
+            }
+        });
+    });
+
