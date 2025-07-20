@@ -6,7 +6,6 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M12 11c0-1.105.895-2 2-2s2 .895 2 2-2 3-2 3H8v-2h4z" />
             </svg>
-            <span class="text-2xl font-bold text-gray-700">MyApp</span>
         </a>
 
         <div class="flex items-center space-x-4">

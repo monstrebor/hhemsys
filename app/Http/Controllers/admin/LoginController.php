@@ -17,7 +17,7 @@ class LoginController extends Controller
             session()->forget('url.intended');
 
             $user = Auth::user();
-            $role = $user->getRoleNames()->first();
+            $role = $user->getRoleNames()->first(); 
             switch ($role) {
                 case 'administrator':
                     return redirect()->route('administrator.dashboard')->with('success', 'Welcome, Admin!');
