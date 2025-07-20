@@ -42,6 +42,7 @@
                         <th class="px-4 py-3 text-left">Description</th>
                         <th class="px-4 py-3 text-left">Quantity</th>
                         <th class="px-4 py-3 text-left">Price</th>
+                        <th class="px-4 py-3 text-left">Image</th>
                         <th class="px-4 py-3 text-left">Supplier</th>
                         <th class="px-4 py-3 text-left">Date Received</th>
                         <th class="px-4 py-3 text-left">Action</th>
@@ -55,6 +56,15 @@
                         <td class="px-4 py-3 text-sm">{{ $product->description ?? 'no data' }}</td>
                         <td class="px-4 py-3">{{ $product->qty ?? 'no data'}}</td>
                         <td class="px-4 py-3">${{ $product->price ?? 'no data'}}</td>
+                        <td class="px-4 py-3">
+                            @if ($product->image)
+                            <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image"
+                                class="w-16 h-16 object-cover rounded" loading="lazy">
+                            @else
+                            <span class="text-gray-400 italic">no image</span>
+                            @endif
+                        </td>
+
                         <td class="px-4 py-3">{{ $product->supplier_id ?? 'no data' }}</td>
                         <td class="px-4 py-3">{{ $product->created_at ?? 'no data' }}</td>
                         <td class="px-4 py-3 space-x-2">
@@ -62,7 +72,8 @@
                                 data-bs-toggle="modal" data-bs-target="#editProductModal" data-id="{{ $product->id }}"
                                 data-name="{{ $product->name }}" data-description="{{ $product->description }}"
                                 data-qty="{{ $product->qty }}" data-price="{{ $product->price }}"
-                                data-supplier="{{ $product->supplier_id }}">
+                                data-supplier="{{ $product->supplier_id }}"
+                                data-image="{{ $product->image ? asset('storage/' . $product->image) : '' }}">
                                 <svg class="h-8 w-8 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

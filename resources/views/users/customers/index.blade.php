@@ -12,12 +12,30 @@
 @endsection
 
 @section('content')
-<div class="w-full h-full">
+
+
+<div class="w-full min-h-screen bg-gray-50">
     @include('partials.customer_navbar')
-    <h1 class="text-5xl">NIGGA</h1>
-    @if (auth()->check() && auth()->user()->is_new)
-        @include('settings.change-password')
-    @endif
+    @include('partials.customer_sidebar')
+
+    <div class="max-w-5xl mx-auto px-4 py-12">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">
+            Welcome back, {{ auth()->user()->name }} 👋
+        </h1>
+        <p class="text-gray-600 mb-8">Ready to shop? Check out our latest products below.</p>
+
+        <a href="{{-- {{ route('products.index') }} --}}"
+            class="inline-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition">
+            🛒 Browse Products
+        </a>
+
+        @if (auth()->check() && auth()->user()->is_new)
+        <div class="mt-10">
+            @include('settings.change-password')
+        </div>
+        @endif
+
+    </div>
 </div>
 
 @endsection

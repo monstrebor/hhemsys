@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('qty');
             $table->integer('price');
             $table->unsignedBigInteger('supplier_id')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

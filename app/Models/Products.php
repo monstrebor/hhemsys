@@ -15,5 +15,6 @@ class Products extends Model
         "qty",
         "price",
         "supplier_id",
+        "image",
     ];
 }

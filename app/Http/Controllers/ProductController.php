@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductForm;
 use App\Models\Products;
 use Illuminate\Http\Request;
+use App\Services\ImageUploader;
 use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
@@ -15,8 +16,10 @@ class ProductController extends Controller
         return view('product.index', compact('products'));
     }
 
-    public function store(ProductForm $request)
+    public function store(ProductForm $request, ImageUploader $uploader)
     {
+        $imagePath = $uploader->handleUpload($request);
+
         try {
             Products::create([
                 'name' => $request->name,
@@ -24,6 +27,7 @@ class ProductController extends Controller
                 'qty' => $request->quantity,
                 'price' => $request->price,
                 'supplier_id' => $request->supplier_id ?? null,
+                'image' => $imagePath,
             ]);
 
             return redirect()->back()->with('success', 'Product created successfully!');
@@ -33,10 +37,16 @@ class ProductController extends Controller
         }
     }
 
-    public function update(ProductForm $request)
+    public function update(ProductForm $request, ImageUploader $uploader)
     {
         try {
             $product = Products::findOrFail($request->id);
+
+            $imagePath = $product->image;
+
+            if ($request->hasFile('image') && $request->file('image')->isValid()) {
+                $imagePath = $uploader->handleUpload($request);
+            }
 
             $product->update([
                 'name' => $request->name,
@@ -44,6 +54,7 @@ class ProductController extends Controller
                 'qty' => $request->quantity,
                 'price' => $request->price,
                 'supplier_id' => $request->supplier_id,
+                'image' => $imagePath,
             ]);
 
             return redirect()->back()->with('success', 'Product updated successfully!');

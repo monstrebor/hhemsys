@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('product.store') }}">
+                <form method="POST" action="{{ route('product.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="row g-3">
                         <div class="col-md-6">
@@ -43,6 +43,15 @@
                             <input type="text" name="price" class="form-control @error('price') is-invalid @enderror"
                                 placeholder="$0.00" value="{{ old('price') }}">
                             @error('price')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label">Image</label>
+                            <input type="file" name="image" accept="image/*"
+                                class="form-control @error('image') is-invalid @enderror">
+                            @error('image')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
