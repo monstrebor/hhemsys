@@ -1,4 +1,4 @@
-<form id="register-form" method="POST" action="{{ route('register.store') }}" class="hidden">
+<form id="register-form" method="POST" action="{{ route('register.store') }}" class="{{ request()->routeIs('register') ? '' : 'hidden' }}">
     @csrf
     <h2 class="text-3xl font-bold mb-6 text-center">Create an Account</h2>
 

@@ -16,9 +16,11 @@
                         <span class="text-sm text-gray-500">Qty: {{ $product->qty }}</span>
                     </div>
 
+                    @auth
                     <button
                         class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition">Buy
                         Now</button>
+                    @endauth
                 </div>
             </div>
         @endforeach

@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Products;
+use App\Models\Product;
 
 class ProductSeeder extends Seeder
 {
@@ -156,7 +156,7 @@ class ProductSeeder extends Seeder
         ];
 
         foreach ($products as $product) {
-            Products::create($product);
+            Product::create($product);
         }
 
         $this->command->info('Seeded 20 real Filipino food products.');

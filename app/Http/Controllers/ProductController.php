@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductForm;
-use App\Models\Products;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Services\ImageUploader;
 use Illuminate\Support\Facades\Log;
@@ -12,7 +12,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Products::all();
+        $products = Product::all();
         return view('product.index', compact('products'));
     }
 
@@ -21,7 +21,7 @@ class ProductController extends Controller
         $imagePath = $uploader->handleUpload($request);
 
         try {
-            Products::create([
+            Product::create([
                 'name' => $request->name,
                 'description' => $request->description,
                 'qty' => $request->quantity,
@@ -40,7 +40,7 @@ class ProductController extends Controller
     public function update(ProductForm $request, ImageUploader $uploader)
     {
         try {
-            $product = Products::findOrFail($request->id);
+            $product = Product::findOrFail($request->id);
 
             $imagePath = $product->image;
 
@@ -67,7 +67,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         try {
-            $product = Products::findOrFail($id);
+            $product = Product::findOrFail($id);
             $product->delete();
 
             return redirect()->back()->with('success', 'Product deleted successfully!');

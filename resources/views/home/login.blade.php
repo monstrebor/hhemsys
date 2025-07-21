@@ -1,4 +1,4 @@
-<form id="login-form" action="{{ route('login.store') }}" method="POST" class="">
+<form id="login-form" action="{{ route('login.store') }}" method="POST" class="{{ request()->routeIs('register') ? 'hidden' : '' }}">
     @csrf
     <h2 class="text-3xl font-bold mb-6 text-center">Login to Your Account</h2>
 
