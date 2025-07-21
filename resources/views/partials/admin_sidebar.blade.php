@@ -1,4 +1,5 @@
-<div class="group fixed top-0 left-0 h-screen w-24 hover:w-64 bg-white border-r border-gray-200 shadow-sm transition-all duration-300 overflow-hidden z-50">
+<div
+    class="group fixed top-0 left-0 h-screen w-24 hover:w-64 bg-white border-r border-gray-200 shadow-sm transition-all duration-300 overflow-hidden z-50">
 
     <!-- Logo / App Name -->
     <div class="flex items-center space-x-2 px-4 py-4">
@@ -20,13 +21,13 @@
             <span class="text-2xl font-medium hidden group-hover:inline">Product</span>
         </a>
 
-        <a href="#"
+        <a href="{{ route('customer-home-images.dashboard') }}"
             class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h4l3 8 4-16 3 8h4" />
             </svg>
-            <span class="text-2xl font-medium hidden group-hover:inline">Dashboard</span>
+            <span class="text-2xl font-medium hidden group-hover:inline">Edit Images</span>
         </a>
 
         <a href="#"

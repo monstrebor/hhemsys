@@ -1,16 +1,13 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-    
+
     <!-- Carousel -->
-    <div x-data="carousel()" x-init="init()"
-        class="relative w-full h-[400px] overflow-hidden rounded-lg shadow-lg bg-white">
+    <div x-data="carousel()" x-init="init()" class="relative w-full h-[400px] overflow-hidden">
         <template x-for="(img, idx) in images" :key="idx">
-            <div x-show="current === idx" x-transition:enter="transition-opacity duration-500"
-                x-transition:leave="transition-opacity duration-500"
-                class="absolute inset-0 flex items-center justify-center opacity-0"
-                :class="{ 'opacity-100': current === idx }">
-                <img :src="img" class="object-cover w-full h-full rounded-lg" alt="">
+            <div x-show="current === idx" class="absolute inset-0 transition-all duration-500">
+                <img :src="img" alt="" class="object-cover w-full h-full">
             </div>
         </template>
+
 
         <button @click="prev()"
             class="absolute left-4 top-1/2 -translate-y-1/2 bg-white hover:bg-gray-100 rounded-full p-2 shadow-md text-xl z-10">‹</button>

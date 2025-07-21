@@ -1,6 +1,6 @@
 @extends('layout.layout')
 
-@section('title', 'Product Dashboard')
+@section('title', 'Customer Home Images Dashboard')
 
 @section('script')
 
@@ -14,13 +14,11 @@
     <main class="m-[100px]">
         @include('layout.all_notif')
 
-        @include('product.product-table')
+        @include('admin.customer-home-images.table')
     </main>
 
-    @include('product.create-modal')
+    @include('admin.customer-home-images.modals')
 
-    @include('product.edit-modal')
 </div>
-
-<script src="{{ asset('js/modal.js') }}"></script>
+<script src="{{ asset('js/adminModals.js') }}"></script>
 @endsection

@@ -1,11 +1,9 @@
 <nav class="bg-white border-b border-gray-200 px-4 py-3 shadow-sm">
     <div class="flex items-center justify-between">
-        <a href="{{ route('administrator.dashboard') }}" class="ml-[70px] flex items-center space-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 11c0-1.105.895-2 2-2s2 .895 2 2-2 3-2 3H8v-2h4z" />
-            </svg>
+        <a href="{{ route('customer.dashboard') }}" class="ml-[65px] flex items-center space-x-2">
+            <img src="" alt="business logo" class="ml-[4px] w-14 h-14 rounded-full">
+            <span
+                class="text-gray-600 hover:text-blue-600 text-2xl font-medium px-4 py-2 rounded transition">MyApp</span>
         </a>
 
         <div class="flex items-center space-x-4">

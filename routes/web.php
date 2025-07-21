@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\admin\{AdministratorController,LoginController,RegisterController,SettingsController};
+use App\Http\Controllers\admin\{AdministratorController, CustomerHomeImagesController, LoginController,RegisterController,SettingsController};
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\users\CustomerController;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +47,13 @@ Route::middleware(['auth', 'role:administrator'])->group(function () {
     Route::post('/product-store', [ProductController::class, 'store'])->name('product.store');
     Route::post('/product-update', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
+
+    //Customer Home Images
+    Route::get('/customer-home-images', [CustomerHomeImagesController::class, 'index'])->name('customer-home-images.dashboard');
+    Route::post('/customer-home-images-store', [CustomerHomeImagesController::class,'store'])->name('customer-home-images.store');
+    Route::post('/customer-home-images-update', [CustomerHomeImagesController::class,'update'])->name('customer-home-images.update');
+    Route::delete('/admin/customer-home-images/{id}', [CustomerHomeImagesController::class, 'destroy'])->name('customer-home-images.destroy');
+
 
     //Settings
     Route::post('/password/update', [SettingsController::class, 'passwordUpdate'])->name('password.update');
