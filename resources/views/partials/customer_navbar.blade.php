@@ -1,29 +1,34 @@
 <nav class="bg-white border-b border-gray-200 px-4 py-3 shadow-sm">
     <div class="flex items-center justify-between">
         <a href="{{ route('customer.dashboard') }}" class="ml-[65px] flex items-center space-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 11c0-1.105.895-2 2-2s2 .895 2 2-2 3-2 3H8v-2h4z" />
-            </svg>
-            <span class="text-2xl font-bold text-gray-700">MyApp</span>
+            <img src="{{ asset('image/sample.png') }}" alt="business logo" class="ml-[4px] w-14 h-14 rounded-full">
+            <span
+                class="text-gray-600 hover:text-blue-600 text-2xl font-medium px-4 py-2 rounded transition">MyApp</span>
         </a>
 
         <div class="flex items-center space-x-4">
             <a href="{{ route('customer.dashboard') }}"
                 class="text-gray-600 hover:text-blue-600 text-2xl font-medium border border-gray-300 px-4 py-2 rounded transition">
-                Dashboard
+                <span class="text-2xl">📦</span> My Orders
             </a>
 
             <a href="#"
                 class="text-gray-600 hover:text-blue-600 text-2xl font-medium border border-gray-300 px-4 py-2 rounded transition">
-                About
+                <span class="text-2xl">🛒</span> My Cart
             </a>
 
-            <a href="#"
-                class="text-gray-600 hover:text-blue-600 text-2xl font-medium border border-gray-300 px-4 py-2 rounded transition">
-                Contact
-            </a>
+            <div class="relative border border-gray-300 px-2 py-2 rounded transition hover:text-blue-600">
+                <button class="flex items-center space-x-1 text-gray-600 hover:text-blue-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A10.95 10.95 0 0112
+                         15c2.485 0 4.77.755 6.879
+                         2.053M15 11a3 3 0 11-6
+                         0 3 3 0 016 0z" />
+                    </svg>
+                    <span class="text-2xl font-medium">My Account</span>
+                </button>
+            </div>
 
             <button
                 class="relative text-gray-600 hover:text-blue-600 border border-gray-300 px-3 py-2 rounded transition">
@@ -38,18 +43,10 @@
                 <span class="absolute -top-1 -right-1 inline-block w-3 h-3 bg-red-500 rounded-full"></span>
             </button>
 
-            <div class="relative border border-gray-300 px-4 py-2 rounded transition hover:text-blue-600">
-                <button class="flex items-center space-x-1 text-gray-600 hover:text-blue-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A10.95 10.95 0 0112
-                         15c2.485 0 4.77.755 6.879
-                         2.053M15 11a3 3 0 11-6
-                         0 3 3 0 016 0z" />
-                    </svg>
-                    <span class="text-2xl font-medium">Account</span>
-                </button>
-            </div>
+            <a href="#"
+                class="text-gray-600 hover:text-blue-600 text-2xl font-medium border border-gray-300 px-4 py-2 rounded transition">
+                <span class="text-2xl">❓</span> Help Center
+            </a>
 
             <form action="{{ route('logout') }}" method="POST">
                 @csrf

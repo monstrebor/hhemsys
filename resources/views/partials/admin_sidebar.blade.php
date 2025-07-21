@@ -2,7 +2,7 @@
 
     <!-- Logo / App Name -->
     <div class="flex items-center space-x-2 px-4 py-4">
-        <img src="{{ asset('image/sample.png') }}" alt="Logo" class="ml-[4px] w-14 h-14 rounded-full" />
+        <img src="{{ asset('image/sample.png') }}" alt="business logo" class="ml-[4px] w-14 h-14 rounded-full" />
         <span class="text-2xl font-bold text-gray-700 hidden group-hover:inline">MyApp</span>
     </div>
 
