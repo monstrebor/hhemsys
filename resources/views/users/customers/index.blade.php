@@ -16,6 +16,7 @@
 
     <div class="max-w-6xl mx-auto px-4 py-8">
         @include('users.customers.partials.image_ads')
+        @include('users.customers.partials.show_products')
 
         @if (auth()->check() && auth()->user()->is_new)
         <div class="mt-10">
