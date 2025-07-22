@@ -100,6 +100,8 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     //Cart
     Route::get('/my-cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
+
 
 
     //Settings
