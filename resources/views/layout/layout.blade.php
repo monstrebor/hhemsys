@@ -23,6 +23,7 @@
     <script src="{{ asset('js/logoutTimer.js') }}"></script>
     <script src="{{ asset('js/customerHomeImages.js') }}" defer></script>
     <script src="https://unpkg.com/alpinejs@3" defer></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         lucide.createIcons();

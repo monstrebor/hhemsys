@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\{AdministratorController, CustomerHomeImagesController, LoginController,RegisterController,SettingsController};
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\{ProductController,OrderController};
 use App\Http\Controllers\users\CustomerController;
 use Illuminate\Support\Facades\Route;
 
@@ -92,6 +92,11 @@ Route::middleware(['auth', 'role:cashier'])->group(function () {
 
 Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/customer', [CustomerController::class, 'index'])->name('customer.dashboard');
+
+    //Order
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders-store', [OrderController::class, 'store'])->name('orders.store');
+
 
     //Settings
     Route::post('/password/update', [SettingsController::class, 'passwordUpdate'])->name('password.update');
