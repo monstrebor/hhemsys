@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\admin\{AdministratorController, CustomerHomeImagesController, LoginController,RegisterController,SettingsController};
-use App\Http\Controllers\{ProductController,OrderController};
+use App\Http\Controllers\admin\{AdministratorController, CustomerHomeImagesController, LoginController, RegisterController, SettingsController};
+use App\Http\Controllers\{CartController, ProductController, OrderController};
 use App\Http\Controllers\users\CustomerController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,8 +55,8 @@ Route::middleware(['auth', 'role:administrator'])->group(function () {
 
     //Customer Home Images
     Route::get('/customer-home-images', [CustomerHomeImagesController::class, 'index'])->name('customer-home-images.dashboard');
-    Route::post('/customer-home-images-store', [CustomerHomeImagesController::class,'store'])->name('customer-home-images.store');
-    Route::post('/customer-home-images-update', [CustomerHomeImagesController::class,'update'])->name('customer-home-images.update');
+    Route::post('/customer-home-images-store', [CustomerHomeImagesController::class, 'store'])->name('customer-home-images.store');
+    Route::post('/customer-home-images-update', [CustomerHomeImagesController::class, 'update'])->name('customer-home-images.update');
     Route::delete('/admin/customer-home-images/{id}', [CustomerHomeImagesController::class, 'destroy'])->name('customer-home-images.destroy');
 
 
@@ -96,6 +96,10 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     //Order
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::post('/orders-store', [OrderController::class, 'store'])->name('orders.store');
+
+    //Cart
+    Route::get('/my-cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 
 
     //Settings

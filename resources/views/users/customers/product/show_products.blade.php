@@ -28,6 +28,11 @@
                     class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 text-lg font-bold">
                     +
                 </button>
+                <button type="button"
+                    class="w-full mt-3 bg-green-600 text-white py-2 rounded hover:bg-green-700 flex items-center justify-center space-x-1"
+                    onclick="openCartModal({{ $product->id }}, '{{ $product->name }}', '{{ asset('storage/' . $product->image) }}', {{ $product->qty }})">
+                    <span class="text-2xl">🛒</span>
+                </button>
             </div>
         </div>
         @endforeach

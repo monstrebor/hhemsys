@@ -10,10 +10,15 @@
         <div class="flex items-center space-x-4">
             <a href="{{ route('customer.dashboard') }}"
                 class="text-gray-600 hover:text-blue-600 text-2xl font-medium border border-gray-300 px-4 py-2 rounded transition">
+                <span class="text-2xl">🛍️</span> Products
+            </a>
+
+            <a href="{{ route('orders.index') }}"
+                class="text-gray-600 hover:text-blue-600 text-2xl font-medium border border-gray-300 px-4 py-2 rounded transition">
                 <span class="text-2xl">📦</span> My Orders
             </a>
 
-            <a href="#"
+            <a href="{{ route('cart.index') }}"
                 class="text-gray-600 hover:text-blue-600 text-2xl font-medium border border-gray-300 px-4 py-2 rounded transition">
                 <span class="text-2xl">🛒</span> My Cart
             </a>

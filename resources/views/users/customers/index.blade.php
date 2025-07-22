@@ -15,8 +15,10 @@
     @include('partials.customer_navbar')
 
     <div class="max-w-6xl mx-auto px-4 py-8">
+        @include('layout.all_notif')
         @include('users.customers.partials.image_ads')
         @include('users.customers.product.show_products')
+        @include('users.customers.product.add-to-cart-modal')
 
         @if (auth()->check() && auth()->user()->is_new)
         <div class="mt-10">
@@ -26,5 +28,5 @@
     </div>
 
 </div>
-
+<script src="{{ asset('js/cartModal.js') }}"></script>
 @endsection
