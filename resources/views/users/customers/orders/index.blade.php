@@ -6,13 +6,12 @@
 @endsection
 
 @section('content')
-
-
 <div class="w-full min-h-screen bg-gray-50">
     @include('partials.customer_navbar')
 
     <div class="max-w-4xl mx-auto px-4 py-8">
         @include('layout.all_notif')
+
         <h1 class="text-4xl font-extrabold text-indigo-700 mb-8 text-center flex items-center justify-center gap-2">
             📦 <span>My Orders</span>
         </h1>
@@ -43,11 +42,55 @@
                 </ul>
             </div>
 
-            <div class="text-right">
+            <div class="text-end mt-4">
+                @php $status = $order->status; @endphp
                 <span
-                    class="inline-block text-sm text-green-600 bg-green-100 border border-green-200 px-3 py-1 rounded-full">
-                    ✅ Status: Placed
+                    class="badge rounded-pill px-3 py-2 fw-semibold
+                    {{ $status === 'placed' ? 'bg-success text-white' : ($status === 'cancelled' ? 'bg-danger text-white' : 'bg-secondary text-white') }}">
+                    {{ $status === 'cancelled' ? '❌ Cancelled' : '✅ Status: Placed' }}
                 </span>
+
+                @if ($status !== 'cancelled')
+                <button type="button" class="btn btn-outline-danger ms-3 d-inline-flex align-items-center gap-2"
+                    data-bs-toggle="modal" data-bs-target="#cancelOrderModal-{{ $order->id }}">
+                    <i class="bi bi-x-circle-fill"></i> Cancel Order
+                </button>
+                @endif
+            </div>
+        </div>
+
+        <div class="modal fade" id="cancelOrderModal-{{ $order->id }}" tabindex="-1"
+            aria-labelledby="cancelOrderModalLabel-{{ $order->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border border-danger">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title d-flex align-items-center gap-2"
+                            id="cancelOrderModalLabel-{{ $order->id }}">
+                            <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+                            Confirm Cancellation
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img src="https://img.icons8.com/?size=100&id=UwZKLuGHcwYk&format=png" alt="Cancel"
+                            class="w-10 h-10 mb-3">
+                        <p class="fs-5 fw-semibold text-danger">Are you sure you want to cancel this order?</p>
+                        <small class="text-muted">This action cannot be undone.</small>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-arrow-left-circle"></i> No, Keep Order
+                        </button>
+                        <form action="{{ route('orders.cancel', $order->id) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-x-circle-fill me-1"></i> Yes, Cancel Order
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
         @empty
@@ -56,8 +99,5 @@
         </div>
         @endforelse
     </div>
-
-
 </div>
-
 @endsection

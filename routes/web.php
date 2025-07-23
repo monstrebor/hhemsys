@@ -96,12 +96,14 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     //Order
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::post('/orders-store', [OrderController::class, 'store'])->name('orders.store');
+    Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 
     //Cart
     Route::get('/my-cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
     Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
-
+    Route::patch('/cart/update', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
 
 
     //Settings

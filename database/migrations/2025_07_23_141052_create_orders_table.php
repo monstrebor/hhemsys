@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('selected_payment_method');
             $table->unsignedBigInteger('created_by');
+            $table->string('status')->default('pending');
             $table->unsignedBigInteger('modified_by')->nullable();
             $table->timestamps();
         });

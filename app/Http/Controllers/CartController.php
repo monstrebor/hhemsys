@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Cart,Order};
+use App\Models\{Cart, Order};
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CartController extends Controller
 {
@@ -43,7 +44,7 @@ class CartController extends Controller
         return back()->with('success', 'Item added to cart.');
     }
 
-        public function checkout(Request $request)
+    public function checkout(Request $request)
     {
         $user = auth()->user();
 
@@ -77,5 +78,30 @@ class CartController extends Controller
         Cart::where('user_id', $user->id)->delete();
 
         return redirect()->route('orders.index')->with('success', 'Order placed successfully!');
+    }
+
+    public function update(Request $request)
+    {
+        $id = $request->input('id');
+        $quantity = $request->input('quantity');
+
+        $cartItem = Cart::findOrFail($id);
+        $cartItem->quantity = $quantity;
+        $cartItem->save();
+
+        return redirect()->back()->with('success', 'Cart updated.');
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $product = Cart::findOrFail($id);
+            $product->delete();
+
+            return redirect()->back()->with('success', 'Cart item deleted successfully!');
+        } catch (\Exception $e) {
+            Log::error('Failed to delete product: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to delete cart item. Please try again.');
+        }
     }
 }

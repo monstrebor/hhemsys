@@ -10,7 +10,11 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::where('created_by', auth()->id())->with('products')->latest()->get();
+        $orders = Order::where('created_by', auth()->id())
+            ->where('status', '!=', 'cancelled')
+            ->with('products')
+            ->latest()
+            ->get();
         return view('users.customers.orders.index', compact('orders'));
     }
 
@@ -57,5 +61,20 @@ class OrderController extends Controller
         }
 
         return redirect()->route('orders.index')->with('success', 'Order placed successfully!');
+    }
+
+    public function cancel(Order $order)
+    {
+        if ($order->created_by !== auth()->id()) {
+            abort(403);
+        }
+
+        if ($order->status !== 'pending') {
+            return back()->with('error', 'Only placed orders can be cancelled.');
+        }
+
+        $order->update(['status' => 'cancelled']);
+
+        return back()->with('success', 'Order has been cancelled.');
     }
 }

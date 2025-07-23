@@ -34,4 +34,17 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const cancelModal = document.getElementById('cancelOrderModal');
+    const form = document.getElementById('cancelOrderForm');
+
+    cancelModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const orderId = button.getAttribute('data-order-id');
+
+        // Update form action
+        form.action = `/orders/${orderId}/cancel`; // 👈 match your route
+    });
+});
+
 
