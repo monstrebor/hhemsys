@@ -1,6 +1,6 @@
 @extends('layout.layout')
 
-@section('title', 'Admin Dashboard')
+@section('title', 'Rider Dashboard')
 
 @section('script')
 

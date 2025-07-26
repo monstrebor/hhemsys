@@ -7,7 +7,7 @@
 
 @section('content')
 <div class="w-full min-h-screen bg-gray-50">
-    @include('partials.customer_navbar')
+    @include('partials.customer.navbar')
     @include('users.customers.cart.edit-modal')
 
     <div class="max-w-5xl mx-auto px-4 py-8">
