@@ -61,6 +61,9 @@ Route::middleware(['auth', 'role:administrator'])->group(function () {
 
     //Orders
     Route::get('/admin-orders',[AdminOrderController::class, 'index'])->name('admin.orders.index');
+
+    //Assigning Order to Rider
+    Route::post('/assign-rider',[DeliveriesController::class, 'assign'])->name('admin.orders.assignRider');
 });
 
 /*

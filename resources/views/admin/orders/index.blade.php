@@ -1,7 +1,7 @@
 @extends('layout.layout')
 
 @section('title', 'Orders Dashboard')
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 @section('script')
 
 @endsection
@@ -13,6 +13,7 @@
 
     <div class="max-w-7xl mx-auto px-6 py-12">
         <h1 class="text-2xl font-semibold text-gray-800 mb-6">Customer Orders</h1>
+        @include('layout.all_notif')
         <div class="flex space-x-4 mb-4">
             <a href="{{ route('admin.orders.index', ['status' => 'all']) }}"
                 class="px-4 py-2 bg-gray-100 rounded {{ request('status') === 'all' ? 'bg-blue-100 text-blue-700' : '' }}">
@@ -61,13 +62,16 @@
                             </span>
                         </td>
                         <td class="px-6 py-4">
-                            {{-- {{ $order->riderAssignment->rider->name ?? '-' }} --}}
+                            {{ $order->riderAssignment->rider->name ?? '-' }}
                         </td>
                         <td class="px-6 py-4 flex space-x-2">
                             @if($order->status === 'pending' || $order->status === 'preparing')
-                            <a href="" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3 py-1 rounded">
+                            <button type="button"
+                                class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3 py-1 rounded"
+                                data-bs-toggle="modal" data-bs-target="#assignRiderModal"
+                                data-order-id="{{ $order->id }}">
                                 Assign Rider
-                            </a>
+                            </button>
                             @else
                             <span class="text-gray-500 text-xs">Assigned</span>
                             @endif
@@ -78,11 +82,15 @@
             </table>
         </div>
 
+        @include('admin.orders.modal')
         <div class="mt-6">
             {{ $orders->links() }}
         </div>
     </div>
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ asset('js/adminOrders.js') }}"></script>
+
 
 @endsection
