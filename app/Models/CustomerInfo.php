@@ -17,4 +17,9 @@ class CustomerInfo extends Model
         'city',
         'province',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

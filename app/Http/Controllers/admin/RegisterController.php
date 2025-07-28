@@ -4,9 +4,8 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use App\Models\User;
+use Illuminate\Support\Facades\{Hash,Mail};
+use App\Models\{User,CustomerInfo};
 use Illuminate\Support\Str;
 use Exception;
 
@@ -41,6 +40,10 @@ class RegisterController extends Controller
                 'status' => 'active',
             ]);
             $user->assignRole('customer');
+            CustomerInfo::create([
+                'user_id' => $user->id,
+                'full_name' => strtoupper($request->name),
+            ]);
 
             return redirect('/')->with('success', 'Account created! Password has been sent to your email.');
         } catch (Exception $e) {

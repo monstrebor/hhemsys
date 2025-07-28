@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\admin\{AdministratorController, CustomerHomeImagesController, LoginController, RegisterController, SettingsController};
-use App\Http\Controllers\{CartController, ProductController, OrderController};
-use App\Http\Controllers\users\CustomerController;
+use App\Http\Controllers\admin\{AdministratorController, AdminOrderController, CustomerHomeImagesController, LoginController, RegisterController, SettingsController};
+use App\Http\Controllers\{CartController, DeliveriesController, ProductController, OrderController};
+use App\Http\Controllers\users\{CustomerAccountController, CustomerController, RiderController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,9 +59,8 @@ Route::middleware(['auth', 'role:administrator'])->group(function () {
     Route::post('/customer-home-images-update', [CustomerHomeImagesController::class, 'update'])->name('customer-home-images.update');
     Route::delete('/admin/customer-home-images/{id}', [CustomerHomeImagesController::class, 'destroy'])->name('customer-home-images.destroy');
 
-
-    //Settings
-    Route::post('/password/update', [SettingsController::class, 'passwordUpdate'])->name('password.update');
+    //Orders
+    Route::get('/admin-orders',[AdminOrderController::class, 'index'])->name('admin.orders.index');
 });
 
 /*
@@ -71,7 +70,10 @@ Route::middleware(['auth', 'role:administrator'])->group(function () {
 */
 
 Route::middleware(['auth', 'role:rider'])->group(function () {
-    // Route::get('/rider', [RiderController::class, 'index'])->name('rider.dashboard');
+    Route::get('/rider', [RiderController::class, 'index'])->name('rider.dashboard');
+
+    //Deliveries
+    Route::get('/deliveries',[DeliveriesController::class,'index'])->name('deliveries.dashboard');
 });
 
 /*
@@ -105,9 +107,10 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::patch('/cart/update', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
 
-
-    //Settings
-    Route::post('/password/update', [SettingsController::class, 'passwordUpdate'])->name('password.update');
+    //Account
+    Route::get('/customer-account',[CustomerAccountController::class, 'index'])->name('customer-account.dashboard');
+    Route::post('/customer-account/update-email',[CustomerAccountController::class, 'updateEmail'])->name('customer-account-email.update');
+    Route::post('/customer-account/update',[CustomerAccountController::class, 'update'])->name('customer-account.update');
 });
 
 /*
@@ -116,3 +119,9 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
+
+Route::post('/password/update', [SettingsController::class, 'passwordUpdate'])
+    ->middleware(['auth'])
+    ->name('password.update');
+
+

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\{Cart, Order};
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\{Auth, Log};
 
 class CartController extends Controller
 {
@@ -44,9 +44,21 @@ class CartController extends Controller
         return back()->with('success', 'Item added to cart.');
     }
 
-    public function checkout(Request $request)
+    public function checkout()
     {
-        $user = auth()->user();
+        $user = Auth::user();
+        $customerInfo = $user->customerInfo;
+        if (
+            !$customerInfo ||
+            is_null($customerInfo->street) ||
+            is_null($customerInfo->city) ||
+            is_null($customerInfo->province) ||
+            is_null($customerInfo->phone_number)
+        ) {
+            return redirect()
+                ->route('customer-account.dashboard')
+                ->with('error', 'Please add the necessary information before placing an order.');
+        }
 
         $cartItems = Cart::with('product')
             ->where('user_id', $user->id)
@@ -57,7 +69,7 @@ class CartController extends Controller
         }
 
         $order = Order::create([
-            'selected_payment_method' => 'cash', // Or dynamic
+            'selected_payment_method' => 'cash',
             'created_by' => $user->id,
             'modified_by' => $user->id,
         ]);
@@ -71,7 +83,6 @@ class CartController extends Controller
                 'quantity' => $item->quantity,
             ]);
 
-            // Decrease product stock
             $item->product->decrement('qty', $item->quantity);
         }
 

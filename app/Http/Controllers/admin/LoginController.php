@@ -17,12 +17,14 @@ class LoginController extends Controller
             session()->forget('url.intended');
 
             $user = Auth::user();
-            $role = $user->getRoleNames()->first(); 
+            $role = $user->getRoleNames()->first();
             switch ($role) {
                 case 'administrator':
                     return redirect()->route('administrator.dashboard')->with('success', 'Welcome, Admin!');
                 case 'customer':
                     return redirect()->route('customer.dashboard')->with('success', 'Welcome, Customer!');
+                case 'rider':
+                    return redirect()->route('rider.dashboard')->with('success', 'Welcome, Rider!');
                 default:
                     Auth::logout();
                     return redirect()->route('login')->with('error', 'Unauthorized role.');

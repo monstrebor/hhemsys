@@ -24,7 +24,7 @@
             </a>
 
             <div class="relative border border-gray-300 px-2 py-2 rounded transition hover:text-blue-600">
-                <button class="flex items-center space-x-1 text-gray-600 hover:text-blue-600">
+                <a href="{{ route('customer-account.dashboard') }}" class="flex items-center space-x-1 text-gray-600 hover:text-blue-600">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A10.95 10.95 0 0112
@@ -33,7 +33,7 @@
                      0 3 3 0 016 0z" />
                     </svg>
                     <span class="text-2xl font-medium">My Account</span>
-                </button>
+                </a>
             </div>
 
             <button
@@ -56,7 +56,7 @@
 
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button
+                <button type="submit"
                     class="px-4 py-2 text-2xl bg-red-500 text-white border border-red-600 rounded hover:bg-red-600 hover:border-red-700 transition">
                     Logout
                 </button>

@@ -1,13 +1,13 @@
 <nav class="bg-white border-b border-gray-200 px-4 py-3 shadow-sm">
     <div class="flex items-center justify-between">
-        <a href="{{ route('administrator.dashboard') }}" class="ml-[65px] flex items-center space-x-2">
+        <a href="#" class="ml-[65px] flex items-center space-x-2">
             <img src="" alt="business logo" class="ml-[4px] w-14 h-14 rounded-full">
             <span
                 class="text-gray-600 hover:text-blue-600 text-2xl font-medium px-4 py-2 rounded transition">MyApp</span>
         </a>
 
         <div class="flex items-center space-x-4">
-            <a href="{{ route('administrator.dashboard') }}"
+            <a href="#"
                 class="text-gray-600 hover:text-blue-600 text-2xl font-medium border border-gray-300 px-4 py-2 rounded transition">
                 Dashboard
             </a>

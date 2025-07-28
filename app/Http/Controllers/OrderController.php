@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Order, Product};
+use App\Models\{Order, Product, User};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,11 +21,23 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
+        $user = Auth::user();
+        $customerInfo = $user->customerInfo;
+        if (
+            !$customerInfo ||
+            is_null($customerInfo->street) ||
+            is_null($customerInfo->city) ||
+            is_null($customerInfo->province) ||
+            is_null($customerInfo->phone_number)
+        ) {
+            return redirect()
+                ->route('customer-account.dashboard')
+                ->with('error', 'Please add the necessary information before placing an order.');
+        }
+
         $productIds = $request->product_id;
         $quantities = $request->quantity;
-
         $items = [];
-
         foreach ($productIds as $index => $id) {
             $qty = (int) $quantities[$index];
 

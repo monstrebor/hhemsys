@@ -23,4 +23,9 @@ class Order extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    public function riderAssignment()
+    {
+        return $this->hasOne(RiderAssignment::class);
+    }
 }

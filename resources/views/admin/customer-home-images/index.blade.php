@@ -8,8 +8,8 @@
 
 @section('content')
 <div class="w-full h-full">
-    @include('partials.admin_navbar')
-    @include('partials.admin_sidebar')
+    @include('partials.admin.navbar')
+    @include('partials.admin.sidebar')
 
     <main class="m-[100px]">
         @include('layout.all_notif')

@@ -10,34 +10,15 @@
 
     <!-- Navigation -->
     <nav class="flex flex-col space-y-2 mt-4 px-4">
-        <a href="{{ route('product.dashboard') }}"
-            class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition">
+        <a href="{{ route('deliveries.dashboard') }}"
+            class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition group">
+            <!-- Truck icon (Heroicons: solid truck) -->
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M20 12V8a2 2 0 00-1.106-1.789l-7-4a2 2 0 00-1.788 0l-7 4A2 2 0 003 8v4a2 2 0 001.106 1.789l7 4a2 2 0 001.788 0l7-4A2 2 0 0020 12z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22V12" />
+                stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M9 17a1 1 0 01-1 1H6a1 1 0 01-1-1H3a1 1 0 01-1-1V7a1 1 0 011-1h13a1 1 0 011 1v3h3a1 1 0 011 1v4a1 1 0 01-1 1h-1a1 1 0 01-1 1H9zM5 17a2 2 0 104 0 2 2 0 00-4 0zm10 0a2 2 0 104 0 2 2 0 00-4 0z" />
             </svg>
-            <span class="text-2xl font-medium hidden group-hover:inline">Product</span>
-        </a>
-
-        <a href="{{ route('customer-home-images.dashboard') }}"
-            class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h4l3 8 4-16 3 8h4" />
-            </svg>
-            <span class="text-2xl font-medium hidden group-hover:inline">Edit Images</span>
-        </a>
-
-        <a href="{{ route('admin.orders.index') }}"
-            class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 7h11L17 13M9 21h.01M15 21h.01" />
-            </svg>
-            <span class="text-2xl font-medium hidden group-hover:inline">Orders</span>
+            <span class="text-2xl font-medium hidden group-hover:inline">My Deliveries</span>
         </a>
 
         <a href="#"
