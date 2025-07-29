@@ -41,16 +41,58 @@
                     @endforeach
                 </ul>
             </div>
-
+            <div class="mt-4 flex justify-end">
+                <div class="text-right">
+                    <div class="text-sm text-gray-600">🚚 Delivery Fee:</div>
+                    <div class="text-lg font-semibold text-indigo-700">₱{{ number_format($order->delivery_fee, 2) }}
+                    </div>
+                </div>
+            </div>
+            <div class="mt-2 flex justify-end">
+                <div class="text-right">
+                    @php
+                    $productTotal = $order->products->sum(function ($product) {
+                    return $product->pivot->quantity * $product->price;
+                    });
+                    $totalAmount = $productTotal + $order->delivery_fee;
+                    @endphp
+                    <div class="text-sm text-gray-600">💰 Total Amount (incl. Delivery):</div>
+                    <div class="text-xl font-bold text-green-700">₱{{ number_format($totalAmount, 2) }}</div>
+                    @if ($order->status === 'delivered')
+                    <div class="mt-2 text-end">
+                        <span class="badge bg-success text-white px-3 py-2 rounded-pill">
+                            ✅ Order Completed
+                        </span>
+                    </div>
+                    @endif
+                </div>
+            </div>
             <div class="text-end mt-4">
-                @php $status = $order->status; @endphp
-                <span
-                    class="badge rounded-pill px-3 py-2 fw-semibold
-                    {{ $status === 'placed' ? 'bg-success text-white' : ($status === 'cancelled' ? 'bg-danger text-white' : 'bg-secondary text-white') }}">
-                    {{ $status === 'cancelled' ? '❌ Cancelled' : '✅ Status: Placed' }}
+                @php
+                $status = $order->status;
+
+                $badgeClass = match($status) {
+                'placed' => 'bg-success text-white',
+                'assigned_to_rider' => 'bg-primary text-white',
+                'delivered' => 'bg-info text-white',
+                'cancelled' => 'bg-danger text-white',
+                default => 'bg-secondary text-white',
+                };
+
+                $statusLabel = match($status) {
+                'placed' => '✅ Status: Placed',
+                'assigned_to_rider' => '🛵 Assigned to Rider',
+                'delivered' => '📦 Delivered',
+                'cancelled' => '❌ Cancelled',
+                default => ucfirst($status),
+                };
+                @endphp
+
+                <span class="badge rounded-pill px-3 py-2 fw-semibold {{ $badgeClass }}">
+                    {{ $statusLabel }}
                 </span>
 
-                @if ($status !== 'cancelled')
+                @if (!in_array($status, ['cancelled', 'assigned_to_rider', 'delivered']))
                 <button type="button" class="btn btn-outline-danger ms-3 d-inline-flex align-items-center gap-2"
                     data-bs-toggle="modal" data-bs-target="#cancelOrderModal-{{ $order->id }}">
                     <i class="bi bi-x-circle-fill"></i> Cancel Order

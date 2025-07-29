@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Order, Product, User};
+use App\Models\{Order, Product, User,CustomerInfo};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -59,9 +59,10 @@ class OrderController extends Controller
         if (empty($items)) {
             return back()->with('error', 'Please select at least one product.');
         }
-
+        $deliveryFee = $this->computeDeliveryFee(auth()->id());
         $order = Order::create([
-            'selected_payment_method' => 'cash', // Adjust as needed
+            'delivery_fee' => $deliveryFee,
+            'selected_payment_method' => 'cash',
             'created_by' => Auth::id(),
             'modified_by' => Auth::id(),
         ]);
@@ -88,5 +89,20 @@ class OrderController extends Controller
         $order->update(['status' => 'cancelled']);
 
         return back()->with('success', 'Order has been cancelled.');
+    }
+
+
+    private function computeDeliveryFee($userId)
+    {
+        $customerInfo = CustomerInfo::where('user_id', $userId)->first();
+
+        $city = strtolower($customerInfo->city);
+
+        return match ($city) {
+            'manila' => 50,
+            'quezon city' => 60,
+            'makati' => 70,
+            default => 80,
+        };
     }
 }

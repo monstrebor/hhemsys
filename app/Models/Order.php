@@ -11,6 +11,7 @@ class Order extends Model
         'selected_payment_method',
         'created_by',
         'modified_by',
+        'delivery_fee',
         'status',
     ];
 

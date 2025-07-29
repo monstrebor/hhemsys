@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Cart, Order};
+use App\Models\{Cart, Order, CustomerInfo};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{Auth, Log};
 
@@ -67,8 +67,9 @@ class CartController extends Controller
         if ($cartItems->isEmpty()) {
             return back()->with('error', 'Your cart is empty.');
         }
-
+        $deliveryFee = $this->computeDeliveryFee(auth()->id());
         $order = Order::create([
+            'delivery_fee' => $deliveryFee,
             'selected_payment_method' => 'cash',
             'created_by' => $user->id,
             'modified_by' => $user->id,
@@ -114,5 +115,19 @@ class CartController extends Controller
             Log::error('Failed to delete product: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to delete cart item. Please try again.');
         }
+    }
+
+    private function computeDeliveryFee($userId)
+    {
+        $customerInfo = CustomerInfo::where('user_id', $userId)->first();
+
+        $city = strtolower($customerInfo->city);
+
+        return match ($city) {
+            'manila' => 50,
+            'quezon city' => 60,
+            'makati' => 70,
+            default => 80,
+        };
     }
 }

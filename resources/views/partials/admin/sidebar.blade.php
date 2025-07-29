@@ -40,6 +40,16 @@
             <span class="text-2xl font-medium hidden group-hover:inline">Orders</span>
         </a>
 
+        <a href="{{ route('admin.transactions.index') }}"
+            class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition group">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8c1.657 0 3-1.567 3-3.5S13.657 1 12 1 9 2.567 9 4.5 10.343 8 12 8zm0 2c-2.21 0-4 1.79-4 4v2h8v-2c0-2.21-1.79-4-4-4zM4 18v2h16v-2a4 4 0 00-4-4H8a4 4 0 00-4 4z" />
+            </svg>
+            <span class="text-2xl font-medium hidden group-hover:inline">Transactions</span>
+        </a>
+
         <a href="#"
             class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"

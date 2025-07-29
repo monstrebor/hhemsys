@@ -49,7 +49,7 @@
                     <tr>
                         <td class="px-6 py-4 font-medium text-gray-900">#{{ $order->id }}</td>
                         <td class="px-6 py-4">{{ ucfirst($order->selected_payment_method) }}</td>
-                        <td class="px-6 py-4">{{ $order->customer->full_name ?? 'N/A' }}</td>
+                        <td class="px-6 py-4">{{ $order->customer->name ?? 'N/A' }}</td>
                         <td class="px-6 py-4">
                             <span class="inline-block px-2 py-1 text-xs rounded
                             {{ match($order->status) {

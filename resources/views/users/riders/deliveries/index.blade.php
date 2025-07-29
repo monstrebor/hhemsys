@@ -33,36 +33,61 @@
             </div>
 
             <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <table class="min-w-full table-auto text-sm text-left text-gray-700">
-                    <thead class="bg-gray-100 uppercase font-bold">
+                <table class="table table-bordered">
+                    <thead>
                         <tr>
-                            <th class="px-4 py-3">Order ID</th>
-                            <th class="px-4 py-3">Customer</th>
-                            <th class="px-4 py-3">Address</th>
-                            <th class="px-4 py-3">Status</th>
-                            <th class="px-4 py-3">Action</th>
+                            <th>Order #</th>
+                            <th>Customer</th>
+                            <th>Address</th>
+                            <th>Status</th>
+                            <th>Assigned At</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @for ($i = 1; $i <= 5; $i++) <tr class="border-t hover:bg-gray-50">
-                            <td class="px-4 py-3">#D00{{ $i }}</td>
-                            <td class="px-4 py-3">Customer {{ $i }}</td>
-                            <td class="px-4 py-3">Makati, Metro Manila</td>
-                            <td class="px-4 py-3">
-                                <span
-                                    class="inline-block px-3 py-1 text-xs rounded-full
-                                {{ $i == 1 ? 'bg-yellow-200 text-yellow-700' : ($i == 2 ? 'bg-blue-200 text-blue-700' : 'bg-green-200 text-green-700') }}">
-                                    {{ $i == 1 ? 'Pending' : ($i == 2 ? 'In Transit' : 'Delivered') }}
+                        @foreach ($assignments as $assignment)
+                        <tr>
+                            <td>#{{ $assignment->order->id }}</td>
+                            <td>{{ $assignment->order->customer->name ?? 'N/A' }}</td>
+                            <td>
+                                {{ $assignment->order->customer->customerInfo->street ?? 'N/A' }},
+                                {{ $assignment->order->customer->customerInfo->city ?? '' }},
+                                {{ $assignment->order->customer->customerInfo->province ?? '' }}
+                            </td>
+                            <td>
+                                <span class="badge bg-{{
+                    $assignment->status === 'assigned' ? 'secondary' :
+                    ($assignment->status === 'in_transit' ? 'warning' : 'success')
+                }}">
+                                    {{ ucfirst(str_replace('_', ' ', $assignment->status)) }}
                                 </span>
                             </td>
-                            <td class="px-4 py-3">
-                                <div x-data="{ open: false }">
-                                    <button @click="open = true" class="text-indigo-600 hover:underline">View</button>
-                                    @include('users.riders.deliveries.modal')
-                                </div>
+                            <td>{{ $assignment->assigned_at ? $assignment->assigned_at->format('M d, Y h:i A') : '—' }}
                             </td>
-                            </tr>
-                            @endfor
+                            <td>
+                                @if ($assignment->status === 'assigned')
+                                <form method="POST" action="{{ route('rider.delivery.accept') }}">
+                                    @csrf
+                                    <input type="hidden" name="assignment_id" value="{{ $assignment->id }}">
+                                    <button class="btn btn-sm btn-success">Accept</button>
+                                </form>
+                                @elseif ($assignment->status === 'in_transit')
+                                <form method="POST" action="{{ route('rider.delivery.complete') }}">
+                                    @csrf
+                                    <input type="hidden" name="assignment_id" value="{{ $assignment->id }}">
+                                    @if ($assignment->order->selected_payment_method === 'cash')
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="payment_collected"
+                                            value="1" required>
+                                        <label class="form-check-label small">Collected COD</label>
+                                    </div>
+                                    @endif
+                                    <button class="btn btn-sm btn-primary mt-1">Mark as Delivered</button>
+                                </form @else <span class="text-muted">Completed</span>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

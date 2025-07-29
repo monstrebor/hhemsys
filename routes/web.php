@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\{AdministratorController, AdminOrderController, CustomerHomeImagesController, LoginController, RegisterController, SettingsController};
 use App\Http\Controllers\{CartController, DeliveriesController, ProductController, OrderController};
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\users\{CustomerAccountController, CustomerController, RiderController};
 use Illuminate\Support\Facades\Route;
 
@@ -64,6 +65,9 @@ Route::middleware(['auth', 'role:administrator'])->group(function () {
 
     //Assigning Order to Rider
     Route::post('/assign-rider',[DeliveriesController::class, 'assign'])->name('admin.orders.assignRider');
+
+    //transaction
+    Route::get('/admin-transactions',[TransactionController::class, 'index'])->name('admin.transactions.index');
 });
 
 /*
@@ -77,6 +81,12 @@ Route::middleware(['auth', 'role:rider'])->group(function () {
 
     //Deliveries
     Route::get('/deliveries',[DeliveriesController::class,'index'])->name('deliveries.dashboard');
+
+    //Accept Deliveries
+    Route::post('/rider/delivery/accept', [DeliveriesController::class, 'accept'])->name('rider.delivery.accept');
+
+    //Delivery Complete
+    Route::post('/rider/delivery/complete', [DeliveriesController::class, 'complete'])->name('rider.delivery.complete');
 });
 
 /*
