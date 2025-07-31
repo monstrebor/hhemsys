@@ -10,7 +10,7 @@
 
     <!-- Navigation -->
     <nav class="flex flex-col space-y-2 mt-4 px-4">
-        <a href="{{ route('product.dashboard') }}"
+        <a href=""
             class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
@@ -21,7 +21,7 @@
             <span class="text-2xl font-medium hidden group-hover:inline">Product</span>
         </a>
 
-        <a href="{{ route('customer-home-images.dashboard') }}"
+        <a href=""
             class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
@@ -30,7 +30,7 @@
             <span class="text-2xl font-medium hidden group-hover:inline">Edit Images</span>
         </a>
 
-        <a href="{{ route('admin.orders.index') }}"
+        <a href=""
             class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
@@ -40,7 +40,7 @@
             <span class="text-2xl font-medium hidden group-hover:inline">Orders</span>
         </a>
 
-        <a href="{{ route('admin.transactions.index') }}"
+        <a href=""
             class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition group">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
@@ -70,7 +70,7 @@
             <span class="text-2xl font-medium hidden group-hover:inline">Contact</span>
         </a>
 
-        <a href="{{ route('admin-create-user.dashboard') }}"
+        <a href="#"
             class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">

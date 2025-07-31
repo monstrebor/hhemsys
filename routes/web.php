@@ -1,9 +1,8 @@
 <?php
 
-use App\Http\Controllers\admin\{AdministratorController, AdminOrderController, CustomerHomeImagesController, LoginController, RegisterController, SettingsController};
-use App\Http\Controllers\{CartController, DeliveriesController, ProductController, OrderController};
-use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\users\{CustomerAccountController, CustomerController, RiderController};
+use App\Http\Controllers\admin\{ManageUserController,AdministratorController, AdminOrderController, CustomerHomeImagesController, LoginController, RegisterController, SettingsController};
+use App\Http\Controllers\{CartController, DeliveriesController, ProductController, OrderController, TransactionController};
+use App\Http\Controllers\users\{CashierController, CustomerAccountController, CustomerController, RiderController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -66,8 +65,12 @@ Route::middleware(['auth', 'role:administrator'])->group(function () {
     //Assigning Order to Rider
     Route::post('/assign-rider',[DeliveriesController::class, 'assign'])->name('admin.orders.assignRider');
 
-    //transaction
+    //Transaction
     Route::get('/admin-transactions',[TransactionController::class, 'index'])->name('admin.transactions.index');
+
+    //Manage user
+    Route::get('admin-create-user',[ManageUserController::class, 'index'])->name('admin-create-user.dashboard');
+    Route::post('admin-create-user-store',[ManageUserController::class, 'store'])->name('admin-create-user.store');
 });
 
 /*
@@ -96,7 +99,7 @@ Route::middleware(['auth', 'role:rider'])->group(function () {
 */
 
 Route::middleware(['auth', 'role:cashier'])->group(function () {
-    // Route::get('/cashier', [CashierController::class, 'index'])->name('cashier.dashboard');
+    Route::get('/cashier', [CashierController::class, 'index'])->name('cashier.dashboard');
 });
 
 /*
@@ -131,7 +134,14 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 | Logout Route
 |--------------------------------------------------------------------------
 */
+
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
+
+/*
+|--------------------------------------------------------------------------
+| Update Password Route
+|--------------------------------------------------------------------------
+*/
 
 Route::post('/password/update', [SettingsController::class, 'passwordUpdate'])
     ->middleware(['auth'])

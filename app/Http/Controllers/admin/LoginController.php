@@ -25,6 +25,8 @@ class LoginController extends Controller
                     return redirect()->route('customer.dashboard')->with('success', 'Welcome, Customer!');
                 case 'rider':
                     return redirect()->route('rider.dashboard')->with('success', 'Welcome, Rider!');
+                case 'cashier':
+                    return redirect()->route('cashier.dashboard')->with('success', 'Welcome, Cashier!');
                 default:
                     Auth::logout();
                     return redirect()->route('login')->with('error', 'Unauthorized role.');
