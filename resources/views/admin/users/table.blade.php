@@ -39,7 +39,18 @@
                         {{ $user->name }}
                     </td>
                     <td class="px-6 py-3">{{ $user->email }}</td>
-                    <td class="px-6 py-3">{{ $user->getRoleNames()->first() }}</td>
+                    <td class="px-6 py-3">
+                        @foreach($user->getRoleNames() as $role)
+                        <span class="px-2 py-1 rounded-full text-xs font-semibold
+            @if($role === 'admin') bg-purple-100 text-purple-700
+            @elseif($role === 'cashier') bg-blue-100 text-blue-700
+            @elseif($role === 'rider') bg-yellow-100 text-yellow-700
+            @else bg-green-100 text-green-700 @endif">
+                            {{ ucfirst($role) }}
+                        </span>
+                        @endforeach
+                    </td>
+
                     <td class="px-6 py-3">
                         <span
                             class="px-3 py-1 rounded-full text-xs font-semibold
@@ -49,7 +60,10 @@
                     </td>
                     <td class="px-6 py-3">{{ $user->created_at->format('M d, Y') }}</td>
                     <td class="px-6 py-3 text-center">
-                        <button class="text-blue-500 hover:text-blue-700 mr-2">
+                        <button class="text-blue-500 hover:text-blue-700 mr-2 edit-btn" data-bs-toggle="modal"
+                            data-bs-target="#editAccountModal" data-id="{{ $user->id }}" data-name="{{ $user->name }}"
+                            data-role="{{ $user->getRoleNames()->first() }}" data-email="{{ $user->email }}"
+                            data-status="{{ $user->status }}" data-createdAt="{{ $user->created_at }}">
                             <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" stroke-width="2"
                                 viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M12 20h9" />
@@ -60,12 +74,28 @@
                                 <path d="M4 20h.01" />
                             </svg>
                         </button>
-                        <button class="text-red-500 hover:text-red-700">
-                            <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M3 6h18M9 6v12m6-12v12M10 11h4" />
-                            </svg>
-                        </button>
+                        <form action="{{ route('admin.users.toggle-status', $user->id) }}" method="POST" class="inline">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit"
+                                class="{{ $user->status === 'inactive' ? 'text-blue-500 hover:text-blue-700' : 'text-red-500 hover:text-red-700' }}"
+                                onclick="return confirm('Are you sure you want to {{ $user->status === 'inactive' ? 'activate' : 'deactivate' }} this user?')">
+                                <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                    @if($user->status === 'inactive')
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="8.5" cy="7" r="4" />
+                                    <line x1="20" y1="8" x2="20" y2="14" />
+                                    <line x1="17" y1="11" x2="23" y2="11" />
+                                    @else
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="8.5" cy="7" r="4" />
+                                    <line x1="18" y1="8" x2="23" y2="13" />
+                                    <line x1="23" y1="8" x2="18" y2="13" />
+                                    @endif
+                                </svg>
+                            </button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach
@@ -73,3 +103,4 @@
         </table>
     </div>
 </div>
+

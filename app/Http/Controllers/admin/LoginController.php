@@ -12,12 +12,20 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             session()->forget('url.intended');
 
             $user = Auth::user();
+
+            if ($user->status === 'inactive') {
+                Auth::logout();
+                return back()->with('error', 'Your account is currently inactive. Please contact support.');
+            }
+
             $role = $user->getRoleNames()->first();
+
             switch ($role) {
                 case 'administrator':
                     return redirect()->route('administrator.dashboard')->with('success', 'Welcome, Admin!');

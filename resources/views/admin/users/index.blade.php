@@ -14,5 +14,5 @@
     @include('admin.users.table')
     @include('admin.users.modal')
 </div>
-
+<script src="{{ asset('js/accountModals.js') }}"></script>
 @endsection

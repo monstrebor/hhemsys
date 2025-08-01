@@ -10,16 +10,18 @@
 
     <!-- Navigation -->
     <nav class="flex flex-col space-y-2 mt-4 px-4">
-        <a href=""
-            class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition">
+        <a href="{{ route('walkins.index') }}"
+            class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition group">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
+                <!-- Shop / Store Icon -->
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M20 12V8a2 2 0 00-1.106-1.789l-7-4a2 2 0 00-1.788 0l-7 4A2 2 0 003 8v4a2 2 0 001.106 1.789l7 4a2 2 0 001.788 0l7-4A2 2 0 0020 12z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22V12" />
+                    d="M3 9l1-5h16l1 5M4 9h16v11H4V9z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14h4v6h-4v-6z" />
             </svg>
-            <span class="text-2xl font-medium hidden group-hover:inline">Product</span>
+            <span class="text-2xl font-medium hidden group-hover:inline">Walk-In</span>
         </a>
+
 
         <a href=""
             class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition">
@@ -38,46 +40,6 @@
                     d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 7h11L17 13M9 21h.01M15 21h.01" />
             </svg>
             <span class="text-2xl font-medium hidden group-hover:inline">Orders</span>
-        </a>
-
-        <a href=""
-            class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition group">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 8c1.657 0 3-1.567 3-3.5S13.657 1 12 1 9 2.567 9 4.5 10.343 8 12 8zm0 2c-2.21 0-4 1.79-4 4v2h8v-2c0-2.21-1.79-4-4-4zM4 18v2h16v-2a4 4 0 00-4-4H8a4 4 0 00-4 4z" />
-            </svg>
-            <span class="text-2xl font-medium hidden group-hover:inline">Transactions</span>
-        </a>
-
-        <a href="#"
-            class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M8 10h.01M12 10h.01M16 10h.01M21 12.5A8.38 8.38 0 0112 21a8.38 8.38 0 01-9-8.5 8.38 8.38 0 019-8.5 8.38 8.38 0 019 8.5z" />
-            </svg>
-            <span class="text-2xl font-medium hidden group-hover:inline">About</span>
-        </a>
-
-        <a href="#"
-            class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M16 2a2 2 0 012 2v16a2 2 0 01-2 2H8a2 2 0 01-2-2V4a2 2 0 012-2h8zm-2 14H10v2h4v-2zm0-10H10v6h4V6z" />
-            </svg>
-            <span class="text-2xl font-medium hidden group-hover:inline">Contact</span>
-        </a>
-
-        <a href="#"
-            class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5.121 17.804A10.95 10.95 0 0112 15c2.485 0 4.77.755 6.879 2.053M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            <span class="text-2xl font-medium hidden group-hover:inline">Account</span>
         </a>
     </nav>
 </div>

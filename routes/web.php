@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\admin\{ManageUserController,AdministratorController, AdminOrderController, CustomerHomeImagesController, LoginController, RegisterController, SettingsController};
-use App\Http\Controllers\{CartController, DeliveriesController, ProductController, OrderController, TransactionController};
+use App\Http\Controllers\admin\{ManageUserController, AdministratorController, AdminOrderController, CustomerHomeImagesController, LoginController, RegisterController, SettingsController};
+use App\Http\Controllers\{WalkinController,CartController, DeliveriesController, ProductController, OrderController, TransactionController};
 use App\Http\Controllers\users\{CashierController, CustomerAccountController, CustomerController, RiderController};
 use Illuminate\Support\Facades\Route;
 
@@ -60,17 +60,19 @@ Route::middleware(['auth', 'role:administrator'])->group(function () {
     Route::delete('/admin/customer-home-images/{id}', [CustomerHomeImagesController::class, 'destroy'])->name('customer-home-images.destroy');
 
     //Orders
-    Route::get('/admin-orders',[AdminOrderController::class, 'index'])->name('admin.orders.index');
+    Route::get('/admin-orders', [AdminOrderController::class, 'index'])->name('admin.orders.index');
 
     //Assigning Order to Rider
-    Route::post('/assign-rider',[DeliveriesController::class, 'assign'])->name('admin.orders.assignRider');
+    Route::post('/assign-rider', [DeliveriesController::class, 'assign'])->name('admin.orders.assignRider');
 
     //Transaction
-    Route::get('/admin-transactions',[TransactionController::class, 'index'])->name('admin.transactions.index');
+    Route::get('/admin-transactions', [TransactionController::class, 'index'])->name('admin.transactions.index');
 
     //Manage user
-    Route::get('admin-create-user',[ManageUserController::class, 'index'])->name('admin-create-user.dashboard');
-    Route::post('admin-create-user-store',[ManageUserController::class, 'store'])->name('admin-create-user.store');
+    Route::get('admin-create-user', [ManageUserController::class, 'index'])->name('admin-create-user.dashboard');
+    Route::post('admin-create-user-store', [ManageUserController::class, 'store'])->name('admin-create-user.store');
+    Route::post('admin-create-user-update', [ManageUserController::class, 'update'])->name('admin-create-user.update');
+    Route::patch('/admin/users/{user}/toggle-status', [ManageUserController::class, 'toggleStatus'])->name('admin.users.toggle-status');
 });
 
 /*
@@ -83,7 +85,7 @@ Route::middleware(['auth', 'role:rider'])->group(function () {
     Route::get('/rider', [RiderController::class, 'index'])->name('rider.dashboard');
 
     //Deliveries
-    Route::get('/deliveries',[DeliveriesController::class,'index'])->name('deliveries.dashboard');
+    Route::get('/deliveries', [DeliveriesController::class, 'index'])->name('deliveries.dashboard');
 
     //Accept Deliveries
     Route::post('/rider/delivery/accept', [DeliveriesController::class, 'accept'])->name('rider.delivery.accept');
@@ -100,6 +102,12 @@ Route::middleware(['auth', 'role:rider'])->group(function () {
 
 Route::middleware(['auth', 'role:cashier'])->group(function () {
     Route::get('/cashier', [CashierController::class, 'index'])->name('cashier.dashboard');
+
+    //Walk-in
+    Route::get('/walkins', [WalkinController::class, 'index'])->name('walkins.index');
+    Route::post('/walkins', [WalkinController::class, 'store'])->name('walkins.store');
+    Route::post('/walkins/{walkin}/confirm-payment', [WalkinController::class, 'confirmPayment'])->name('walkins.confirm-payment');
+    Route::get('/cashier/walkins/{walkin}/receipt', [WalkinController::class, 'downloadReceipt'])->name('walkins.download-receipt');
 });
 
 /*
@@ -124,9 +132,9 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
 
     //Account
-    Route::get('/customer-account',[CustomerAccountController::class, 'index'])->name('customer-account.dashboard');
-    Route::post('/customer-account/update-email',[CustomerAccountController::class, 'updateEmail'])->name('customer-account-email.update');
-    Route::post('/customer-account/update',[CustomerAccountController::class, 'update'])->name('customer-account.update');
+    Route::get('/customer-account', [CustomerAccountController::class, 'index'])->name('customer-account.dashboard');
+    Route::post('/customer-account/update-email', [CustomerAccountController::class, 'updateEmail'])->name('customer-account-email.update');
+    Route::post('/customer-account/update', [CustomerAccountController::class, 'update'])->name('customer-account.update');
 });
 
 /*
@@ -146,5 +154,3 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->midd
 Route::post('/password/update', [SettingsController::class, 'passwordUpdate'])
     ->middleware(['auth'])
     ->name('password.update');
-
-

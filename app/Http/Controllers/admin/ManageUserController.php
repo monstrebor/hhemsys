@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\{Hash, Mail};
 use App\Models\{User, CustomerInfo};
+use Carbon\Exceptions\Exception;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,7 @@ class ManageUserController extends Controller
             'roles' => 'required|string|in:admin,cashier,customer,rider',
         ]);
 
-        $randomPassword = Str::random(8);
+        $randomPassword = Str::random(6);
 
         try {
             Mail::send('mails.account_created', [
@@ -60,5 +61,46 @@ class ManageUserController extends Controller
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'User creation failed. Error: ' . $e->getMessage());
         }
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'id'   => 'required|exists:users,id',
+            'role' => 'required|in:admin,cashier,customer,rider',
+        ]);
+
+        $user = User::findOrFail($request->id);
+
+        if ($user->id === auth()->id()) {
+            return back()->with('error', 'You cannot change the role of the account you are currently using.');
+        }
+
+        try {
+            $user->syncRoles([$request->role]);
+
+            if ($request->role === 'customer' && !$user->customerInfo) {
+                CustomerInfo::create([
+                    'user_id'   => $user->id,
+                    'full_name' => strtoupper($user->name),
+                ]);
+            }
+
+            return back()->with('success', 'Account role has been changed successfully!');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Role update failed. Error: ' . $e->getMessage());
+        }
+    }
+
+    public function toggleStatus(User $user)
+    {
+        if ($user->id === auth()->id()) {
+            return back()->with('error', 'You cannot change the status of the account you are currently using.');
+        }
+
+        $newStatus = $user->status === 'active' ? 'inactive' : 'active';
+        $user->update(['status' => $newStatus]);
+
+        return back()->with('success', 'User status changed to ' . ucfirst($newStatus) . ' successfully!');
     }
 }

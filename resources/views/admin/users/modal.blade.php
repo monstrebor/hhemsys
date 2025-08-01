@@ -60,3 +60,58 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="editAccountModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="editForm" method="POST" action="{{ route('admin-create-user.update') }}">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-blue-600 font-semibold text-[30px]">Edit Account Role</h5>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="edit-id" name="id">
+
+                    <div class="mb-3">
+                        <label>Name</label>
+                        <input type="text" id="edit-name" class="form-control" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Role</label>
+                        <input id="edit-role" class="form-control" readonly>
+                        <select name="role" class="form-control">
+                            <option value="" selected>< - - Select role - - ></option>
+                            <option value="administrator">Admin</option>
+                            <option value="cashier">Cashier</option>
+                            <option value="customer">Customer</option>
+                            <option value="rider">Rider</option>
+                        </select>
+                        @error('role')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <input type="text" id="edit-email" class="form-control" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Status</label>
+                        <input type="text" id="edit-status" class="form-control" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Created At</label>
+                        <input type="text" id="edit-createdAt" class="form-control" readonly>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

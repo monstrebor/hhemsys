@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class CashierController extends Controller
 {
-    public function inder(){
+    public function index(){
         return view("users.cashiers.index");
     }
 }
