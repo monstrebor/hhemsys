@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\{ManageUserController, AdministratorController, AdminOrderController, CustomerHomeImagesController, LoginController, RegisterController, SettingsController};
-use App\Http\Controllers\{WalkinController,CartController, DeliveriesController, ProductController, OrderController, TransactionController};
+use App\Http\Controllers\{WalkinController, CartController, DeliveriesController, ProductController, OrderController, ReturnExchangeController, TransactionController};
 use App\Http\Controllers\users\{CashierController, CustomerAccountController, CustomerController, RiderController};
 use Illuminate\Support\Facades\Route;
 
@@ -73,6 +73,10 @@ Route::middleware(['auth', 'role:administrator'])->group(function () {
     Route::post('admin-create-user-store', [ManageUserController::class, 'store'])->name('admin-create-user.store');
     Route::post('admin-create-user-update', [ManageUserController::class, 'update'])->name('admin-create-user.update');
     Route::patch('/admin/users/{user}/toggle-status', [ManageUserController::class, 'toggleStatus'])->name('admin.users.toggle-status');
+
+    //Reports
+    Route::get('/reports/walkins', [AdministratorController::class, 'walkinReport'])->name('admin.reports.walkins');
+    Route::get('/reports/return-exchange', [AdministratorController::class, 'returnExchangeReport'])->name('admin.reports.return-exchange');
 });
 
 /*
@@ -108,6 +112,10 @@ Route::middleware(['auth', 'role:cashier'])->group(function () {
     Route::post('/walkins', [WalkinController::class, 'store'])->name('walkins.store');
     Route::post('/walkins/{walkin}/confirm-payment', [WalkinController::class, 'confirmPayment'])->name('walkins.confirm-payment');
     Route::get('/cashier/walkins/{walkin}/receipt', [WalkinController::class, 'downloadReceipt'])->name('walkins.download-receipt');
+
+    //Return and exchange
+    Route::get('cashier/return-exchange', [ReturnExchangeController::class, 'index'])->name('cashier.return-exchange.dashboard');
+    Route::post('/return-exchange/store', [ReturnExchangeController::class, 'store'])->name('return-exchanges.store');
 });
 
 /*

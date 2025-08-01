@@ -31,4 +31,9 @@ class Walkin extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    public function returnExchanges()
+    {
+        return $this->hasMany(ReturnExchange::class);
+    }
 }

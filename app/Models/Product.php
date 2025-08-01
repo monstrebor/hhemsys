@@ -27,4 +27,9 @@ class Product extends Model
     {
         return $this->hasMany(Cart::class);
     }
+
+    public function returnExchangeItems()
+    {
+        return $this->hasMany(ReturnExchangeItem::class);
+    }
 }

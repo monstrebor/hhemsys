@@ -41,4 +41,47 @@
             </svg>
         </div>
     </div>
+    <div class="grid grid-cols-1 sm:grid-cols-3 mt-10 gap-10 text-lg text-gray-700 font-medium">
+
+        <div class="flex items-center justify-between bg-gray-50 p-6 rounded-xl shadow-sm border">
+            <div class="flex flex-col">
+                <span class="text-gray-500">Online Paid Today</span>
+                <span class="text-2xl font-bold text-green-600">
+                    ₱{{ number_format($totalPaidToday, 2) }}
+                </span>
+            </div>
+        </div>
+
+        <a href="{{ route('admin.reports.walkins') }}" class="block">
+            <div
+                class="flex items-center justify-between bg-gray-50 p-6 rounded-xl shadow-sm border hover:bg-blue-50 transition cursor-pointer">
+                <div class="flex flex-col">
+                    <span class="text-gray-500">Walk-in Paid Today</span>
+                    <span class="text-2xl font-bold text-blue-600">
+                        ₱{{ number_format($totalWalkinPaidToday, 2) }}
+                    </span>
+                </div>
+                <svg class="w-10 h-10 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </div>
+        </a>
+
+        <a href="{{ route('admin.reports.return-exchange') }}" class="block">
+            <div
+                class="flex items-center justify-between bg-gray-50 p-6 rounded-xl shadow-sm border hover:bg-yellow-50 transition cursor-pointer">
+                <div class="flex flex-col">
+                    <span class="text-gray-500">Return / Exchange Today</span>
+                    <span class="text-2xl font-bold text-yellow-600">
+                        {{ $returnExchangeCountToday }}
+                    </span>
+                </div>
+                <svg class="w-10 h-10 text-yellow-500" fill="none" stroke="currentColor" stroke-width="2"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </div>
+        </a>
+    </div>
 </div>
