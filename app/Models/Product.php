@@ -32,4 +32,9 @@ class Product extends Model
     {
         return $this->hasMany(ReturnExchangeItem::class);
     }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
 }

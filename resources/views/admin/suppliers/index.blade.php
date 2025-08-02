@@ -1,12 +1,13 @@
 @extends('layout.layout')
 
-@section('title', 'Return / Exchange Detailed Report')
+@section('title', 'Suppliers Dashboard')
 
 @section('content')
 <div class="w-full min-h-screen bg-gray-50">
     @include('partials.admin.navbar')
     @include('partials.admin.sidebar')
 
-    @include('admin.return-exchange.table')
+    @include('admin.suppliers.table')
 </div>
+
 @endsection

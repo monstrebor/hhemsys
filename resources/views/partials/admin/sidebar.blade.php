@@ -50,7 +50,28 @@
             <span class="text-2xl font-medium hidden group-hover:inline">Transactions</span>
         </a>
 
-        <a href="#"
+        <a href="{{ route('purchase-order.index') }}"
+            class="flex items-center space-x-3 text-gray-600 hover:text-green-600 py-2 px-2 rounded hover:bg-gray-100 transition group">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 2H15a2 2 0 012 2V6a2 2 0 002 2h1v12a2 2 0 01-2 2H7a2 2 0 01-2-2V4a2 2 0 012-2z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2l4-4" />
+            </svg>
+            <span class="text-2xl font-medium hidden group-hover:inline">Purchase Order</span>
+        </a>
+
+        <a href="{{ route('suppliers.index') }}"
+            class="flex items-center space-x-3 text-gray-600 hover:text-green-600 py-2 px-2 rounded hover:bg-gray-100 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 7h13l3 5v5H3V7z M16 17a2 2 0 104 0 2 2 0 00-4 0zM5 17a2 2 0 104 0 2 2 0 00-4 0z" />
+            </svg>
+            <span class="text-2xl font-medium hidden group-hover:inline">Suppliers</span>
+        </a>
+
+        {{-- <a href="#"
             class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 flex-shrink-0" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
@@ -68,7 +89,7 @@
                     d="M16 2a2 2 0 012 2v16a2 2 0 01-2 2H8a2 2 0 01-2-2V4a2 2 0 012-2h8zm-2 14H10v2h4v-2zm0-10H10v6h4V6z" />
             </svg>
             <span class="text-2xl font-medium hidden group-hover:inline">Contact</span>
-        </a>
+        </a> --}}
 
         <a href="{{ route('admin-create-user.dashboard') }}"
             class="flex items-center space-x-3 text-gray-600 hover:text-blue-600 py-2 px-2 rounded hover:bg-gray-100 transition">

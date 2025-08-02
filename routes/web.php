@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\{ManageUserController, AdministratorController, AdminOrderController, CustomerHomeImagesController, LoginController, RegisterController, SettingsController};
-use App\Http\Controllers\{WalkinController, CartController, DeliveriesController, ProductController, OrderController, ReturnExchangeController, TransactionController};
+use App\Http\Controllers\{SupplierController, PurchaseOrderController, WalkinController, CartController, DeliveriesController, ProductController, OrderController, ReturnExchangeController, TransactionController};
 use App\Http\Controllers\users\{CashierController, CustomerAccountController, CustomerController, RiderController};
 use Illuminate\Support\Facades\Route;
 
@@ -77,6 +77,19 @@ Route::middleware(['auth', 'role:administrator'])->group(function () {
     //Reports
     Route::get('/reports/walkins', [AdministratorController::class, 'walkinReport'])->name('admin.reports.walkins');
     Route::get('/reports/return-exchange', [AdministratorController::class, 'returnExchangeReport'])->name('admin.reports.return-exchange');
+
+    Route::resource('/suppliers', SupplierController::class)->names('admin.suppliers');
+
+    //Purchase Order / Supply Routes
+    Route::get('/purchase-orders', [PurchaseOrderController::class, 'index'])->name('purchase-order.index');
+    Route::post('/purchase-orders/store', [PurchaseOrderController::class, 'store'])->name('purchase-orders.store');
+    Route::patch('/purchase-orders/{purchaseOrder}/receive', [PurchaseOrderController::class, 'receive'])->name('purchase-order.receive');
+
+    //Suppliers
+    Route::get('/suppliers/', [SupplierController::class, 'index'])->name('suppliers.index');
+    Route::post('/suppliers/store', [SupplierController::class, 'store'])->name('suppliers.store');
+    Route::put('/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
+    Route::delete('/suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
 });
 
 /*
