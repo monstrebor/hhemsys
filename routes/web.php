@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\admin\{ManageUserController, AdministratorController, AdminOrderController, CustomerHomeImagesController, LoginController, RegisterController, SettingsController};
-use App\Http\Controllers\{SupplierController, PurchaseOrderController, WalkinController, CartController, DeliveriesController, ProductController, OrderController, ReturnExchangeController, TransactionController};
-use App\Http\Controllers\users\{CashierController, CustomerAccountController, CustomerController, RiderController};
+use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\home\AuthController;
+use App\Http\Controllers\users\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,8 +35,8 @@ Route::get('/register', function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware('guest')->group(function () {
-    Route::post('/login-store', [LoginController::class, 'login'])->name('login.store');
-    Route::post('/register-store', [RegisterController::class, 'store'])->name('register.store');
+    Route::post('/login-store', [AuthController::class, 'login'])->name('login.store');
+    Route::post('/register-store', [AuthController::class, 'store'])->name('register.store');
 });
 
 /*
@@ -44,118 +44,20 @@ Route::middleware('guest')->group(function () {
 | Admin
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'role:administrator'])->group(function () {
-    Route::get('/admin', [AdministratorController::class, 'index'])->name('administrator.dashboard');
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
 
-    //Product
-    Route::get('/product', [ProductController::class, 'index'])->name('product.dashboard');
-    Route::post('/product-store', [ProductController::class, 'store'])->name('product.store');
-    Route::post('/product-update', [ProductController::class, 'update'])->name('product.update');
-    Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
-
-    //Customer Home Images
-    Route::get('/customer-home-images', [CustomerHomeImagesController::class, 'index'])->name('customer-home-images.dashboard');
-    Route::post('/customer-home-images-store', [CustomerHomeImagesController::class, 'store'])->name('customer-home-images.store');
-    Route::post('/customer-home-images-update', [CustomerHomeImagesController::class, 'update'])->name('customer-home-images.update');
-    Route::delete('/admin/customer-home-images/{id}', [CustomerHomeImagesController::class, 'destroy'])->name('customer-home-images.destroy');
-
-    //Orders
-    Route::get('/admin-orders', [AdminOrderController::class, 'index'])->name('admin.orders.index');
-
-    //Assigning Order to Rider
-    Route::post('/assign-rider', [DeliveriesController::class, 'assign'])->name('admin.orders.assignRider');
-
-    //Transaction
-    Route::get('/admin-transactions', [TransactionController::class, 'index'])->name('admin.transactions.index');
-
-    //Manage user
-    Route::get('admin-create-user', [ManageUserController::class, 'index'])->name('admin-create-user.dashboard');
-    Route::post('admin-create-user-store', [ManageUserController::class, 'store'])->name('admin-create-user.store');
-    Route::post('admin-create-user-update', [ManageUserController::class, 'update'])->name('admin-create-user.update');
-    Route::patch('/admin/users/{user}/toggle-status', [ManageUserController::class, 'toggleStatus'])->name('admin.users.toggle-status');
-
-    //Reports
-    Route::get('/reports/walkins', [AdministratorController::class, 'walkinReport'])->name('admin.reports.walkins');
-    Route::get('/reports/return-exchange', [AdministratorController::class, 'returnExchangeReport'])->name('admin.reports.return-exchange');
-
-    Route::resource('/suppliers', SupplierController::class)->names('admin.suppliers');
-
-    //Purchase Order / Supply Routes
-    Route::get('/purchase-orders', [PurchaseOrderController::class, 'index'])->name('purchase-order.index');
-    Route::post('/purchase-orders/store', [PurchaseOrderController::class, 'store'])->name('purchase-orders.store');
-    Route::patch('/purchase-orders/{purchaseOrder}/receive', [PurchaseOrderController::class, 'receive'])->name('purchase-order.receive');
-
-    //Suppliers
-    Route::get('/suppliers/', [SupplierController::class, 'index'])->name('suppliers.index');
-    Route::post('/suppliers/store', [SupplierController::class, 'store'])->name('suppliers.store');
-    Route::put('/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
-    Route::delete('/suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
 });
 
 /*
 |--------------------------------------------------------------------------
-| Rider
+| User
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'role:rider'])->group(function () {
-    Route::get('/rider', [RiderController::class, 'index'])->name('rider.dashboard');
+Route::middleware(['auth', 'role:user'])->group(function () {
+    Route::get('/user', [UserController::class, 'index'])->name('user.dashboard');
 
-    //Deliveries
-    Route::get('/deliveries', [DeliveriesController::class, 'index'])->name('deliveries.dashboard');
-
-    //Accept Deliveries
-    Route::post('/rider/delivery/accept', [DeliveriesController::class, 'accept'])->name('rider.delivery.accept');
-
-    //Delivery Complete
-    Route::post('/rider/delivery/complete', [DeliveriesController::class, 'complete'])->name('rider.delivery.complete');
-});
-
-/*
-|--------------------------------------------------------------------------
-| Cashier
-|--------------------------------------------------------------------------
-*/
-
-Route::middleware(['auth', 'role:cashier'])->group(function () {
-    Route::get('/cashier', [CashierController::class, 'index'])->name('cashier.dashboard');
-
-    //Walk-in
-    Route::get('/walkins', [WalkinController::class, 'index'])->name('walkins.index');
-    Route::post('/walkins', [WalkinController::class, 'store'])->name('walkins.store');
-    Route::post('/walkins/{walkin}/confirm-payment', [WalkinController::class, 'confirmPayment'])->name('walkins.confirm-payment');
-    Route::get('/cashier/walkins/{walkin}/receipt', [WalkinController::class, 'downloadReceipt'])->name('walkins.download-receipt');
-
-    //Return and exchange
-    Route::get('cashier/return-exchange', [ReturnExchangeController::class, 'index'])->name('cashier.return-exchange.dashboard');
-    Route::post('/return-exchange/store', [ReturnExchangeController::class, 'store'])->name('return-exchanges.store');
-});
-
-/*
-|--------------------------------------------------------------------------
-| Customer
-|--------------------------------------------------------------------------
-*/
-
-Route::middleware(['auth', 'role:customer'])->group(function () {
-    Route::get('/customer', [CustomerController::class, 'index'])->name('customer.dashboard');
-
-    //Order
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::post('/orders-store', [OrderController::class, 'store'])->name('orders.store');
-    Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
-
-    //Cart
-    Route::get('/my-cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
-    Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
-    Route::patch('/cart/update', [CartController::class, 'update'])->name('cart.update');
-    Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
-
-    //Account
-    Route::get('/customer-account', [CustomerAccountController::class, 'index'])->name('customer-account.dashboard');
-    Route::post('/customer-account/update-email', [CustomerAccountController::class, 'updateEmail'])->name('customer-account-email.update');
-    Route::post('/customer-account/update', [CustomerAccountController::class, 'update'])->name('customer-account.update');
 });
 
 /*
@@ -164,7 +66,7 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 /*
 |--------------------------------------------------------------------------

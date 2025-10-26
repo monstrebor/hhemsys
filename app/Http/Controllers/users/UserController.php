@@ -5,9 +5,10 @@ namespace App\Http\Controllers\users;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class CashierController extends Controller
+class UserController extends Controller
 {
-    public function index(){
-        return view("users.cashiers.index");
+    public function index()
+    {
+        return view("users.index");
     }
 }
