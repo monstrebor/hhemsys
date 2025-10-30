@@ -1,5 +1,16 @@
 <div>
     <!-- The whole future lies in uncertainty: live immediately. - Seneca -->
+    @if (session('status'))
+        <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 rounded-3 mb-2" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="fa-solid fa-circle-check fa-lg me-2 text-success"></i>
+                <div>
+                    <strong>Success!</strong> {{ session('status') }}
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 rounded-3 mb-2" role="alert">
             <div class="d-flex align-items-center">

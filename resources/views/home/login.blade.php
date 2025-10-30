@@ -34,5 +34,11 @@
     <p class="mt-4 text-center text-sm">
         Don't have an account?
         <a href="#" class="text-indigo-600 hover:underline" onclick="toggleForms()">Create one</a>
+        <br>
+        <a href="#" class="text-indigo-600 hover:underline" data-bs-toggle="modal"
+            data-bs-target="#forgotPasswordModal">
+            Forgot Password?
+        </a>
     </p>
+
 </form>

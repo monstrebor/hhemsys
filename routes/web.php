@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\admin\AdminController;
-use App\Http\Controllers\home\AuthController;
+use App\Http\Controllers\home\{AuthController, SettingsController,ForgotPassController};
+use App\Http\Controllers\home\ProfileController;
 use App\Http\Controllers\users\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,8 +36,10 @@ Route::get('/register', function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware('guest')->group(function () {
-    Route::post('/login-store', [AuthController::class, 'login'])->name('login.store');
-    Route::post('/register-store', [AuthController::class, 'store'])->name('register.store');
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('/login-store', 'login')->name('login.store');
+        Route::post('/register-store', 'store')->name('register.store');
+    });
 });
 
 /*
@@ -69,11 +72,42 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 /*
-|--------------------------------------------------------------------------
-| Update Password Route
-|--------------------------------------------------------------------------
+|---------------------------------------------------------------------------
+| Settings Routes 
+|---------------------------------------------------------------------------
 */
 
-Route::post('/password/update', [SettingsController::class, 'passwordUpdate'])
-    ->middleware(['auth'])
-    ->name('password.update');
+Route::prefix('settings')->middleware(['auth'])->group(function () {
+    Route::get('/', [SettingsController::class, 'index'])
+        ->name('settings');
+
+    Route::post('/password/update', [SettingsController::class, 'passwordUpdate'])
+        ->name('settings-password.update');
+});
+
+/*
+|---------------------------------------------------------------------------
+| Profile Routes 
+|---------------------------------------------------------------------------
+*/
+
+Route::prefix('profile')->middleware(['auth'])->group(function () {
+    Route::get('/', [ProfileController::class, 'index'])
+        ->name('profile');
+
+    Route::post('/info/update', [ProfileController::class, 'infoCreateOrUpdate'])
+        ->name('profile.createOrUpdate');
+});
+
+/*
+|---------------------------------------------------------------------------
+| Reset Routes 
+|---------------------------------------------------------------------------
+*/
+
+Route::controller(ForgotPassController::class)->group(function () {
+    Route::post('forgot-password', 'sendResetLinkEmail')->name('password.email');
+    Route::get('reset-password/{token}', 'showResetForm')->name('password.reset');
+    Route::post('reset-password', 'reset')->name('password.update');
+});
+
