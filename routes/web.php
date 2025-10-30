@@ -1,6 +1,9 @@
 <?php
 
-use App\Http\Controllers\admin\RegisterController;
+use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\home\{AuthController, SettingsController,ForgotPassController};
+use App\Http\Controllers\home\ProfileController;
+use App\Http\Controllers\users\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +18,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home.index');
+    return view('home.landing-page');
 })->name('home');
+
+Route::get('/login', function () {
+    return view('home.index');
+})->name('login');
+
+Route::get('/register', function () {
+    return view('home.index');
+})->name('register');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,41 +36,31 @@ Route::get('/', function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware('guest')->group(function () {
-    // Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-    // Route::post('/login', [LoginController::class, 'login']);
-
-    Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
-    // Route::post('/register', [RegisterController::class, 'register']);
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('/login-store', 'login')->name('login.store');
+        Route::post('/register-store', 'store')->name('register.store');
+    });
 });
 
 /*
 |--------------------------------------------------------------------------
-| Onboarding Route for New Users (optional, if using is_new flag)
+| Admin
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'is_new'])->group(function () {
-    // Route::get('/onboarding', [OnboardingController::class, 'index'])->name('onboarding');
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+
 });
 
 /*
 |--------------------------------------------------------------------------
-| Role-Based Routes
+| User
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'role:administrator'])->group(function () {
-    // Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
-});
 
-Route::middleware(['auth', 'role:rider'])->group(function () {
-    // Route::get('/rider', [RiderController::class, 'index'])->name('rider.dashboard');
-});
+Route::middleware(['auth', 'role:user'])->group(function () {
+    Route::get('/user', [UserController::class, 'index'])->name('user.dashboard');
 
-Route::middleware(['auth', 'role:cashier'])->group(function () {
-    // Route::get('/cashier', [CashierController::class, 'index'])->name('cashier.dashboard');
-});
-
-Route::middleware(['auth', 'role:customer'])->group(function () {
-    // Route::get('/customer', [CustomerController::class, 'index'])->name('customer.dashboard');
 });
 
 /*
@@ -66,4 +68,46 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 | Logout Route
 |--------------------------------------------------------------------------
 */
-// Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+/*
+|---------------------------------------------------------------------------
+| Settings Routes 
+|---------------------------------------------------------------------------
+*/
+
+Route::prefix('settings')->middleware(['auth'])->group(function () {
+    Route::get('/', [SettingsController::class, 'index'])
+        ->name('settings');
+
+    Route::post('/password/update', [SettingsController::class, 'passwordUpdate'])
+        ->name('settings-password.update');
+});
+
+/*
+|---------------------------------------------------------------------------
+| Profile Routes 
+|---------------------------------------------------------------------------
+*/
+
+Route::prefix('profile')->middleware(['auth'])->group(function () {
+    Route::get('/', [ProfileController::class, 'index'])
+        ->name('profile');
+
+    Route::post('/info/update', [ProfileController::class, 'infoCreateOrUpdate'])
+        ->name('profile.createOrUpdate');
+});
+
+/*
+|---------------------------------------------------------------------------
+| Reset Routes 
+|---------------------------------------------------------------------------
+*/
+
+Route::controller(ForgotPassController::class)->group(function () {
+    Route::post('forgot-password', 'sendResetLinkEmail')->name('password.email');
+    Route::get('reset-password/{token}', 'showResetForm')->name('password.reset');
+    Route::post('reset-password', 'reset')->name('password.update');
+});
+
