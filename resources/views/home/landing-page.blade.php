@@ -70,7 +70,7 @@
         <section class="py-16 bg-gradient-to-r from-indigo-600 to-blue-600 text-white text-center">
             <h2 class="text-4xl font-bold mb-4">Start Managing Smarter Today</h2>
             <p class="text-lg mb-8 opacity-90">Sign up now and take control of your household finances.</p>
-            <a href=""
+        <a href="{{ route('register') }}"
                 class="bg-white text-indigo-700 hover:bg-gray-100 px-10 py-4 rounded-lg font-semibold shadow-md transition">
                 Create an Account
             </a>

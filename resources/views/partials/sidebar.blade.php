@@ -44,9 +44,20 @@
                     </li>
                 @elseif (auth()->user()->hasRole('user'))
                     <li>
-                        <a href="{{ route('admin.dashboard') }}"
+                        <a href="{{ route('user.dashboard') }}"
                             class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-indigo-50 no-underline">
                             <span class="material-icons mr-3 text-indigo-500">dashboard</span> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('user.transactions.index') }}"
+                            class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-indigo-50 no-underline">
+                            <span class="material-icons mr-3 text-indigo-500">account_balance_wallet</span> Transactions
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('user.household.index') }}" class="flex items-center p-2 rounded-lg text-gray-700 hover:bg-indigo-50 no-underline">
+                            <span class="material-icons mr-3 text-indigo-500">home</span> Household
                         </a>
                     </li>
                     <li>

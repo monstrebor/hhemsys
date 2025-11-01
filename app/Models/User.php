@@ -50,4 +50,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserInfo::class);
     }
+
+    public function household()
+    {
+        return $this->belongsTo(Household::class);
+    }
+
+    public function ownedHousehold()
+    {
+        return $this->hasOne(Household::class, 'user_id');
+    }
 }

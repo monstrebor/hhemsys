@@ -22,4 +22,5 @@
             </div>
         @endif
     </div>
+    <script src="{{ asset('js/inviteCodeTimer.js') }}"></script>
 @endsection

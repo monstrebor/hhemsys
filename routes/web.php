@@ -1,9 +1,10 @@
 <?php
 
 use App\Http\Controllers\admin\AdminController;
-use App\Http\Controllers\home\{AuthController, SettingsController,ForgotPassController};
+use App\Http\Controllers\home\{AuthController, SettingsController, ForgotPassController};
 use App\Http\Controllers\home\ProfileController;
-use App\Http\Controllers\users\UserController;
+use App\Http\Controllers\users\{UserController, TransactionController};
+use App\Http\Controllers\users\HouseholdController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,10 +59,21 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'role:user'])->group(function () {
-    Route::get('/user', [UserController::class, 'index'])->name('user.dashboard');
+Route::middleware(['auth', 'role:user'])
+    ->prefix('user')
+    ->as('user.')
+    ->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('dashboard');
 
-});
+        Route::get('/household', [HouseholdController::class, 'index'])->name('household.index');
+        Route::post('/household', [HouseholdController::class, 'store'])->name('household.store');
+        Route::post('/household/invite', [HouseholdController::class, 'sendInvite'])->name('household.invite');
+        Route::get('/household/join/{code}', [HouseholdController::class, 'join'])->name('household.join');
+
+        // Transactions
+        Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+        Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
+    });
 
 /*
 |--------------------------------------------------------------------------
