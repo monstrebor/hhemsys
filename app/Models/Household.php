@@ -10,44 +10,32 @@ class Household extends Model
     use HasFactory;
 
     protected $fillable = [
+        'owner_id',
         'name',
         'expected_monthly_income',
         'description',
-        'user_id',
-        'invite_code',
     ];
-
-    protected static function booted()
-    {
-        static::creating(function ($household) {
-            if (!$household->invite_code) {
-                $household->invite_code = strtoupper(Str::random(8)); 
-            }
-        });
-    }
 
     public function owner()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'owner_id');
     }
 
     public function users()
     {
-        return $this->belongsToMany(User::class)
-            ->withPivot('relation', 'expected_cash')
+        return $this->belongsToMany(User::class, 'household_user', 'household_id', 'user_id')
+            ->withPivot('relation', 'is_owner', 'role')
             ->withTimestamps();
     }
 
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class);
-    }
     public function accounts()
     {
         return $this->hasMany(Account::class);
     }
-    public function categories()
+
+    public function invitations()
     {
-        return $this->hasMany(Category::class);
+        return $this->hasMany(Invitation::class);
     }
 }
+

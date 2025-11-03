@@ -39,6 +39,7 @@ class AuthController extends Controller
                 'password' => Hash::make($randomPassword),
                 'is_new' => true,
                 'status' => 'active',
+                'invite_code' => strtoupper(Str::random(8)),
             ]);
             $user->assignRole('user');
 

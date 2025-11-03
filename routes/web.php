@@ -65,10 +65,12 @@ Route::middleware(['auth', 'role:user'])
     ->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('dashboard');
 
+        // Household
         Route::get('/household', [HouseholdController::class, 'index'])->name('household.index');
-        Route::post('/household', [HouseholdController::class, 'store'])->name('household.store');
-        Route::post('/household/invite', [HouseholdController::class, 'sendInvite'])->name('household.invite');
-        Route::get('/household/join/{code}', [HouseholdController::class, 'join'])->name('household.join');
+        Route::post('/household/store', [HouseholdController::class, 'store'])->name('household.store');
+        Route::put('/household/{household}/update', [HouseholdController::class, 'update'])->name('household.update');
+        Route::post('/household/invite-code', [HouseholdController::class, 'updateInviteCode'])->name('update.invite-code');
+        Route::post('/household/invite-member', [HouseholdController::class, 'storeInvite'])->name('store-invite');
 
         // Transactions
         Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');

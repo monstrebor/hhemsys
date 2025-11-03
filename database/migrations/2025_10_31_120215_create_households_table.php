@@ -12,11 +12,12 @@ return new class extends Migration {
     {
         Schema::create('households', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('owner_id')
+                ->constrained('users')
+                ->onDelete('cascade');
             $table->string('name');
             $table->decimal('expected_monthly_income', 12, 2)->nullable();
             $table->text('description')->nullable();
-            $table->string('invite_code')->nullable()->unique();
             $table->timestamps();
         });
     }

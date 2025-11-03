@@ -2,62 +2,65 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
         'is_new',
-        'status'
+        'status',
+        'invite_code',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+            if (!$user->invite_code) {
+                $user->invite_code = strtoupper(Str::random(8));
+            }
+        });
+    }
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    public function userInfo()
-    {
-        return $this->hasOne(UserInfo::class);
-    }
 
     public function household()
     {
         return $this->belongsTo(Household::class);
     }
 
+    public function userInfo()
+    {
+        return $this->hasOne(UserInfo::class);
+    }
+
+    public function households()
+    {
+        return $this->belongsToMany(Household::class, 'household_user', 'user_id', 'household_id')
+            ->withPivot('relation', 'is_owner', 'role')
+            ->withTimestamps();
+    }
+
     public function ownedHousehold()
     {
-        return $this->hasOne(Household::class, 'user_id');
+        return $this->households()->wherePivot('is_owner', true);
     }
+
 }

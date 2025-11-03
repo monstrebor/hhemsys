@@ -18,8 +18,8 @@ return new class extends Migration {
             $table->boolean('is_new')->default(true);
             $table->enum('status', ['active', 'inactive', 'suspended'])->default('active');
             $table->string('password');
-             $table->foreignId('household_id')->nullable(); 
             $table->string('relation')->nullable();
+            $table->string('invite_code')->nullable()->unique();
             $table->rememberToken();
             $table->timestamps();
         });

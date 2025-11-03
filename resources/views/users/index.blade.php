@@ -15,6 +15,7 @@
             @include('partials.navbar')
             @include('layout.all-notif')
             @include('users.main.index')
+            @include('household.invite-notif')
         </div>
         @if (auth()->check() && auth()->user()->is_new)
             <div class="mt-10">
@@ -22,5 +23,4 @@
             </div>
         @endif
     </div>
-    <script src="{{ asset('js/inviteCodeTimer.js') }}"></script>
 @endsection

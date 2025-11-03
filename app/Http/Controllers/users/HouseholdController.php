@@ -3,142 +3,208 @@
 namespace App\Http\Controllers\users;
 
 use App\Http\Controllers\Controller;
-use App\Models\{Household, User, Account};
+use App\Models\{Household, User, Account, Invitation};
+use Illuminate\Support\Facades\{Auth, DB, Mail};
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Exception;
+
 
 class HouseholdController extends Controller
 {
     public function index()
     {
-        $user = Auth::user()->id;
-        $household = Household::where('user_id', $user)->first();
+        $user = Auth::user();
+
+        $household = Household::with(['accounts', 'users', 'owner'])
+            ->where('owner_id', $user->id)
+            ->orWhereHas('users', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            })
+            ->first();
+
+        $userCode = $user->invite_code;
+
         if (!$household) {
             return view('household.index', [
                 'household' => null,
-                'showCreateModal' => true
+                'showCreateModal' => true,
+                'userCode' => $userCode,
             ]);
         }
 
-        $household->load('accounts', 'users');
-        $household->invite_code = strtoupper(Str::random(8));
-        $household->save();
-
-        return view('household.index', compact('household'))
+        return view('household.index', compact('household', 'userCode'))
             ->with('showCreateModal', false);
     }
-
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'relation' => 'required|string|max:255',
-            'expected_cash' => 'nullable|numeric',
+            'expected_cash' => 'nullable|numeric|min:0',
+            'description' => 'nullable|string|max:500',
         ]);
 
         $user = auth()->user();
 
-        // Check if user is already part of a household
-        if ($user->household_id || $user->ownedHousehold) {
+        $alreadyMember = DB::table('household_user')
+            ->where('user_id', $user->id)
+            ->exists();
+
+        if ($alreadyMember) {
             return redirect()
                 ->route('user.household.index')
                 ->with('error', 'You already belong to a household. You cannot create another one.');
         }
 
+        DB::beginTransaction();
+
         try {
-            // Create a new household
             $household = Household::create([
-                'user_id' => $user->id,
+                'owner_id' => $user->id,
                 'name' => $request->name,
                 'expected_monthly_income' => $request->expected_cash ?? 0,
-                'invite_code' => strtoupper(Str::random(8)),
+                'description' => $request->description ?? null,
             ]);
 
-            // Update user info to associate with household
-            $user->update([
-                'household_id' => $household->id,
+            $household->users()->attach($user->id, [
                 'relation' => $request->relation,
+                'is_owner' => true,
+                'role' => 'owner',
             ]);
 
-            // If expected cash is provided, create account for household
             if ($request->expected_cash) {
                 $household->accounts()->create([
+                    'user_id' => $user->id,
                     'name' => "{$user->name}'s Account",
+                    'type' => 'asset',
                     'balance' => $request->expected_cash,
                 ]);
             }
+
+            DB::commit();
 
             return redirect()
                 ->route('user.household.index')
                 ->with('success', 'Household created successfully!');
 
         } catch (\Exception $e) {
+            DB::rollBack();
             \Log::error('Error creating household: ' . $e->getMessage());
 
-            return redirect()->route('user.household.index')
+            return redirect()
+                ->route('user.household.index')
                 ->with('error', 'There was an issue creating your household. Please try again later.');
         }
     }
 
-    public function sendInvite(Request $request)
+
+    public function update(Request $request, Household $household)
     {
-        $request->validate(['email' => 'required|email']);
+        $user = auth()->user();
 
-        $household = Auth::user()->household;
-
-        if (!$household->invite_code) {
-            return back()->with('error', 'This household does not have an invite code yet!');
+        if ($household->owner_id !== $user->id && $household->user_id !== $user->id) {
+            return redirect()
+                ->route('user.household.index')
+                ->with('error', 'Unauthorized: Only the household owner can edit this.');
         }
 
-        return back()->with('success', "Invite sent! Code: {$household->invite_code}");
-    }
-
-
-    public function join($code)
-    {
-        $household = Household::where('invite_code', $code)->firstOrFail();
-        $user = Auth::user();
-
-        if ($user->household) {
-            return redirect()->route('user.household.index')
-                ->with('error', 'You are already part of a household!');
-        }
-
-        $user->household()->associate($household);
-        $user->save();
-
-        return redirect()->route('user.household.index')
-            ->with('success', 'You successfully joined the household!');
-    }
-
-    public function getInviteCode(Request $request)
-    {
-        $user = $request->user();
-        $household = Household::where('user_id', $user->id)->first();
-
-        if (!$household) {
-            return response()->json([
-                'message' => 'No household data found for this user.'
-            ], 404);
-        }
-
-        $lastGeneratedAt = $household->updated_at;  
-        $timeDifference = now()->diffInHours($lastGeneratedAt);
-
-        if ($timeDifference >= 2) {
-            $household->invite_code = strtoupper(Str::random(8));
-            $household->save();
-
-            return response()->json([
-                'invite_code' => $household->invite_code,
-                'message' => 'Invite code updated successfully.'
-            ]);
-        }
-
-        return response()->json([
-            'invite_code' => $household->invite_code,
-            'message' => 'Invite code is still valid.'
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'expected_monthly_income' => 'nullable|numeric|min:0',
+            'description' => 'nullable|string|max:500',
         ]);
+
+        try {
+            $updateData = [
+                'expected_monthly_income' => $request->expected_monthly_income ?? $household->expected_monthly_income,
+                'description' => $request->description ?? $household->description,
+            ];
+
+            $lastUpdated = $household->updated_at;
+            if (!$lastUpdated || $lastUpdated->diffInDays(now()) >= 30) {
+                $updateData['name'] = $request->name;
+            }
+
+            $household->update($updateData);
+
+            $message = isset($updateData['name'])
+                ? 'Household information updated successfully!'
+                : 'Household updated successfully (name change not allowed within 30 days).';
+
+            return redirect()
+                ->route('user.household.index')
+                ->with('success', $message);
+
+        } catch (\Exception $e) {
+            \Log::error('Error updating household: ' . $e->getMessage());
+            return redirect()
+                ->route('user.household.index')
+                ->with('error', 'An error occurred while updating the household.');
+        }
+    }
+
+    public function updateInviteCode()
+    {
+        try {
+            $userId = User::find(auth()->user()->id);
+            $userId->invite_code = strtoupper(Str::random(8));
+            $userId->save();
+
+            return redirect()
+                ->route('user.household.index')
+                ->with('success', 'Invite code updated successfully!');
+        } catch (\Exception $e) {
+            \Log::error('Error creating household: ' . $e->getMessage());
+            return redirect()->route('user.household.index')
+                ->with('error', 'There was an issue updating your invite code. Please try again later.');
+        }
+    }
+
+    public function storeInvite(Request $request)
+    {
+        $request->validate([
+            'invite_code' => 'required|string|exists:users,invite_code',
+        ]);
+
+        $sender = auth()->user();
+        $receiver = User::where('invite_code', $request->invite_code)->first();
+
+        if ($receiver && $receiver->id === $sender->id) {
+            return back()->with('error', 'You cannot invite yourself.');
+        }
+
+        if (!$sender->household_id) {
+            return back()->with('error', 'You must have a household before inviting members.');
+        }
+
+        if ($receiver && $receiver->household_id) {
+            return back()->with('error', 'This user already belongs to another household.');
+        }
+
+        $existingInvite = Invitation::where('sender_id', $sender->id)
+            ->where('receiver_id', $receiver->id)
+            ->where('household_id', $sender->household_id)
+            ->where('status', 'pending')
+            ->first();
+
+        if ($existingInvite) {
+            return back()->with('warning', 'You have already sent an invitation to this user.');
+        }
+
+        try {
+            Invitation::create([
+                'sender_id' => $sender->id,
+                'receiver_id' => $receiver->id,
+                'household_id' => $sender->household_id,
+                'status' => 'pending',
+                'relation' => $request->relation,
+            ]);
+
+            return back()->with('success', 'Invitation sent successfully!');
+        } catch (\Exception $e) {
+            \Log::error('Error storing invitation: ' . $e->getMessage());
+            return back()->with('error', 'An error occurred while sending the invitation. Please try again.');
+        }
     }
 }

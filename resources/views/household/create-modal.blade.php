@@ -21,7 +21,6 @@
           <div class="mb-3 text-[12px]">
             <label for="relation" class="form-label fw-semibold">Your Relation</label>
             <select class="form-select" id="relation" name="relation" required>
-              <option value="" disabled selected>Select your relation</option>
               <option value="Father">Father</option>
               <option value="Mother">Mother</option>
               <option value="Son">Son</option>
@@ -37,6 +36,9 @@
               <option value="Niece">Niece</option>
               <option value="Husband">Husband</option>
               <option value="Wife">Wife</option>
+              <option value="Friend">Friend</option>
+              <option value="Girlfriend">Girl Friend</option>
+              <option value="Boyfriend">Boy Friend</option>
               <option value="Partner">Partner</option>
               <option value="Guardian">Guardian</option>
               <option value="Relative">Relative</option>
