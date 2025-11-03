@@ -168,23 +168,25 @@ class HouseholdController extends Controller
         ]);
 
         $sender = auth()->user();
-        $receiver = User::where('invite_code', $request->invite_code)->first();
+        $receiver = User::with('households')->where('invite_code', $request->invite_code)->first();
 
         if ($receiver && $receiver->id === $sender->id) {
             return back()->with('error', 'You cannot invite yourself.');
         }
 
-        if (!$sender->household_id) {
+        $senderHousehold = $sender->households()->first();
+        if (!$senderHousehold) {
             return back()->with('error', 'You must have a household before inviting members.');
         }
 
-        if ($receiver && $receiver->household_id) {
+        $receiverHousehold = $receiver ? $receiver->households()->first() : null;
+        if ($receiverHousehold) {
             return back()->with('error', 'This user already belongs to another household.');
         }
 
         $existingInvite = Invitation::where('sender_id', $sender->id)
             ->where('receiver_id', $receiver->id)
-            ->where('household_id', $sender->household_id)
+            ->where('household_id', $senderHousehold->id)
             ->where('status', 'pending')
             ->first();
 
@@ -196,7 +198,7 @@ class HouseholdController extends Controller
             Invitation::create([
                 'sender_id' => $sender->id,
                 'receiver_id' => $receiver->id,
-                'household_id' => $sender->household_id,
+                'household_id' => $senderHousehold->id,
                 'status' => 'pending',
                 'relation' => $request->relation,
             ]);

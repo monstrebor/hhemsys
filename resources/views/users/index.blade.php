@@ -3,7 +3,19 @@
 @section('title', 'User Dashboard')
 
 @section('script')
-
+    @section('script')
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                @if (isset($showInviteNotif) && $showInviteNotif)
+                    var modal = new bootstrap.Modal(document.getElementById('inviteMemberModal'), {
+                        backdrop: false
+                    });
+                    modal.show();
+                @endif
+          });
+        </script>
+    @endsection
+    <link rel="stylesheet" href="{{ asset('css/inviteNotif.css') }}">
 @endsection
 
 @section('content')

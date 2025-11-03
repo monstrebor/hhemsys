@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('sender_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('receiver_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('household_id')->constrained()->onDelete('cascade');
+            $table->string('relation')->nullable();
             $table->enum('status', ['pending', 'accepted', 'denied'])->default('pending');
             $table->timestamps();
         });

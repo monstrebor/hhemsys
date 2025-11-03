@@ -33,6 +33,11 @@ class Household extends Model
         return $this->hasMany(Account::class);
     }
 
+    public function members()
+    {
+        return $this->hasMany(User::class); 
+    }
+
     public function invitations()
     {
         return $this->hasMany(Invitation::class);
