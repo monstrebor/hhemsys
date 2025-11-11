@@ -18,40 +18,44 @@
               Please kindly choose your response.
             </p>
 
-            <div class="mb-3">
-              <label for="relation" class="form-label fw-semibold">Your Relation</label>
-              <select class="form-select" id="relation" name="relation" required>
-                <option value="" selected>Choose relation</option>
-                <option value="Father">Father</option>
-                <option value="Mother">Mother</option>
-                <option value="Son">Son</option>
-                <option value="Daughter">Daughter</option>
-                <option value="Brother">Brother</option>
-                <option value="Sister">Sister</option>
-                <option value="Grandfather">Grandfather</option>
-                <option value="Grandmother">Grandmother</option>
-                <option value="Uncle">Uncle</option>
-                <option value="Aunt">Aunt</option>
-                <option value="Cousin">Cousin</option>
-                <option value="Nephew">Nephew</option>
-                <option value="Niece">Niece</option>
-                <option value="Husband">Husband</option>
-                <option value="Wife">Wife</option>
-                <option value="Friend">Friend</option>
-                <option value="Girlfriend">Girl Friend</option>
-                <option value="Boyfriend">Boy Friend</option>
-                <option value="Partner">Partner</option>
-                <option value="Guardian">Guardian</option>
-                <option value="Relative">Relative</option>
-                <option value="Roommate">Roommate</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
+            <form action="{{ route('user.store-reply') }}" method="POST">
+              @csrf
+              <input type="hidden" name="invitation_id" value="{{ $invitation->id }}">
+              <div class="mb-3">
+                <label for="relation" class="form-label fw-semibold">Your Relation</label>
+                <select class="form-select" id="relation" name="relation" required>
+                  <option value="" selected>Choose relation</option>
+                  <option value="Father">Father</option>
+                  <option value="Mother">Mother</option>
+                  <option value="Son">Son</option>
+                  <option value="Daughter">Daughter</option>
+                  <option value="Brother">Brother</option>
+                  <option value="Sister">Sister</option>
+                  <option value="Grandfather">Grandfather</option>
+                  <option value="Grandmother">Grandmother</option>
+                  <option value="Uncle">Uncle</option>
+                  <option value="Aunt">Aunt</option>
+                  <option value="Cousin">Cousin</option>
+                  <option value="Nephew">Nephew</option>
+                  <option value="Niece">Niece</option>
+                  <option value="Husband">Husband</option>
+                  <option value="Wife">Wife</option>
+                  <option value="Friend">Friend</option>
+                  <option value="Girlfriend">Girl Friend</option>
+                  <option value="Boyfriend">Boy Friend</option>
+                  <option value="Partner">Partner</option>
+                  <option value="Guardian">Guardian</option>
+                  <option value="Relative">Relative</option>
+                  <option value="Roommate">Roommate</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
 
-            <div class="d-flex justify-content-between">
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-primary" id="acceptInvitation">Accept</button>
-            </div>
+              <div class="d-flex justify-content-between">
+                <button type="submit" name="action" value="cancel" class="btn btn-danger">Cancel</button>
+                <button type="submit" name="action" value="accept" class="btn btn-primary">Accept</button>
+              </div>
+            </form>
           </div>
 
         </div>

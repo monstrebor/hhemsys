@@ -101,7 +101,9 @@
                                                     class="text-muted">{{ $member->pivot->relation ?? 'No relation set' }}</small>
                                             </div>
                                             @if($household->owner->id === $member->id)
-                                                <span class="badge bg-warning text-dark">Owner</span>
+                                                <span class="badge bg-warning text-white">Owner</span>
+                                            @else
+                                                <span class="badge bg-primary text-white">Member</span>
                                             @endif
                                         </li>
                                     @empty

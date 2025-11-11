@@ -3,7 +3,7 @@
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\home\{AuthController, SettingsController, ForgotPassController};
 use App\Http\Controllers\home\ProfileController;
-use App\Http\Controllers\users\{UserController, TransactionController};
+use App\Http\Controllers\users\{UserController, TransactionController,InviteController};
 use App\Http\Controllers\users\HouseholdController;
 use Illuminate\Support\Facades\Route;
 
@@ -69,12 +69,16 @@ Route::middleware(['auth', 'role:user'])
         Route::get('/household', [HouseholdController::class, 'index'])->name('household.index');
         Route::post('/household/store', [HouseholdController::class, 'store'])->name('household.store');
         Route::put('/household/{household}/update', [HouseholdController::class, 'update'])->name('household.update');
-        Route::post('/household/invite-code', [HouseholdController::class, 'updateInviteCode'])->name('update.invite-code');
-        Route::post('/household/invite-member', [HouseholdController::class, 'storeInvite'])->name('store-invite');
+        
 
         // Transactions
         Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
         Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
+
+        // Invitation
+        Route::post('/household/invite-code', [InviteController::class, 'updateInviteCode'])->name('update.invite-code');
+        Route::post('/invite-member', [InviteController::class, 'storeInvite'])->name('store-invite');
+        Route::post('/invite-reply',[InviteController::class, 'storeReply'])->name('store-reply');
     });
 
 /*
