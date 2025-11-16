@@ -1,10 +1,14 @@
 <?php
 
 use App\Http\Controllers\admin\AdminController;
-use App\Http\Controllers\home\{AuthController, SettingsController, ForgotPassController};
+use App\Http\Controllers\home\AuthController;
+use App\Http\Controllers\home\ForgotPassController;
 use App\Http\Controllers\home\ProfileController;
-use App\Http\Controllers\users\{UserController, TransactionController,InviteController};
+use App\Http\Controllers\home\SettingsController;
 use App\Http\Controllers\users\HouseholdController;
+use App\Http\Controllers\users\InviteController;
+use App\Http\Controllers\users\TransactionController;
+use App\Http\Controllers\users\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,7 +34,6 @@ Route::get('/register', function () {
     return view('home.index');
 })->name('register');
 
-
 /*
 |--------------------------------------------------------------------------
 | Guest Routes (Unauthenticated)
@@ -48,10 +51,13 @@ Route::middleware('guest')->group(function () {
 | Admin
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->as(value: 'admin.')
+    ->group(function () {
+        Route::get('/admin', [AdminController::class, 'index'])->name('dashboard');
 
-});
+    });
 
 /*
 |--------------------------------------------------------------------------
@@ -69,7 +75,6 @@ Route::middleware(['auth', 'role:user'])
         Route::get('/household', [HouseholdController::class, 'index'])->name('household.index');
         Route::post('/household/store', [HouseholdController::class, 'store'])->name('household.store');
         Route::put('/household/{household}/update', [HouseholdController::class, 'update'])->name('household.update');
-        
 
         // Transactions
         Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
@@ -78,7 +83,11 @@ Route::middleware(['auth', 'role:user'])
         // Invitation
         Route::post('/household/invite-code', [InviteController::class, 'updateInviteCode'])->name('update.invite-code');
         Route::post('/invite-member', [InviteController::class, 'storeInvite'])->name('store-invite');
-        Route::post('/invite-reply',[InviteController::class, 'storeReply'])->name('store-reply');
+        Route::post('/invite-reply', [InviteController::class, 'storeReply'])->name('store-reply');
+
+        // Transaction 
+        Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+        Route::post('/transactions-store', [TransactionController::class, 'store'])->name('transactions.store');
     });
 
 /*
@@ -91,7 +100,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 
 /*
 |---------------------------------------------------------------------------
-| Settings Routes 
+| Settings Routes
 |---------------------------------------------------------------------------
 */
 
@@ -105,7 +114,7 @@ Route::prefix('settings')->middleware(['auth'])->group(function () {
 
 /*
 |---------------------------------------------------------------------------
-| Profile Routes 
+| Profile Routes
 |---------------------------------------------------------------------------
 */
 
@@ -119,7 +128,7 @@ Route::prefix('profile')->middleware(['auth'])->group(function () {
 
 /*
 |---------------------------------------------------------------------------
-| Reset Routes 
+| Reset Routes
 |---------------------------------------------------------------------------
 */
 
@@ -128,4 +137,3 @@ Route::controller(ForgotPassController::class)->group(function () {
     Route::get('reset-password/{token}', 'showResetForm')->name('password.reset');
     Route::post('reset-password', 'reset')->name('password.update');
 });
-

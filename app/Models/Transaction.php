@@ -12,7 +12,6 @@ class Transaction extends Model
     protected $fillable = [
         'household_id',
         'account_id',
-        'category_id',
         'amount',
         'date',
         'description',
@@ -27,10 +26,5 @@ class Transaction extends Model
     public function account()
     {
         return $this->belongsTo(Account::class);
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
     }
 }

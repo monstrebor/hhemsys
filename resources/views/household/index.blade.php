@@ -9,7 +9,7 @@
                 var modal = new bootstrap.Modal(document.getElementById('createHouseholdModal'));
                 modal.show();
             @endif
-                        });
+                                        });
     </script>
 @endsection
 
@@ -67,9 +67,18 @@
                         <div class="col-md-4">
                             <div class="p-3 bg-white rounded-3 shadow-sm h-100">
                                 <h6 class="text-muted mb-1">Invite Code</h6>
+
                                 <div class="d-flex align-items-center">
-                                    <span class="fw-bold text-primary me-2">{{ $userCode ?? 'N/A' }}</span>
-                                    <form action="{{ route('user.update.invite-code') }}" method="POST">
+                                    <span id="inviteCode" class="fw-bold text-primary me-2">
+                                        {{ $userCode ?? 'N/A' }}
+                                    </span>
+
+                                    <button type="button" id="copyBtn" class="btn btn-outline-secondary btn-sm me-2"
+                                        onclick="copyInviteCode()">
+                                        Copy
+                                    </button>
+
+                                    <form action="{{ route('user.update.invite-code') }}" method="POST" class="m-0 p-0">
                                         @csrf
                                         <button class="btn btn-outline-primary btn-sm">Regenerate</button>
                                     </form>
@@ -149,5 +158,6 @@
         @include('household.create-modal')
         @include('household.add-member-modal')
         @include('household.edit-modal')
+        <script src="{{ asset('js/copyInviteCode.js') }}"></script>
     </div>
 </div>

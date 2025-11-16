@@ -23,7 +23,6 @@
                     </button>
                 </div>
 
-                <!-- Summary Cards -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                     <div class="bg-white p-4 rounded-lg shadow">
                         <h3 class="text-sm text-gray-500">Today</h3>
@@ -39,25 +38,25 @@
                     </div>
                 </div>
 
-                <!-- Expense Table -->
                 <div class="bg-white shadow rounded-lg p-4">
                     <h3 class="text-lg font-semibold mb-3">Recent Transactions</h3>
                     <table class="min-w-full text-left text-sm text-gray-700">
-                        <thead>
+                        <thead class="bg-gray-100">
                             <tr class="border-b">
-                                <th class="py-2">Date</th>
-                                <th class="py-2">Category</th>
-                                <th class="py-2">Description</th>
-                                <th class="py-2 text-right">Amount</th>
+                                <th class="py-2 px-4">Date</th>
+                                <th class="py-2 px-4">Description</th>
+                                <th class="py-2 px-4">Type</th>
+                                <th class="py-2 px-4 text-right">Amount (₱)</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ($transactions as $tx)
                                 <tr class="border-b hover:bg-gray-50">
-                                    <td class="py-2">{{ $tx->date->format('M d, Y') }}</td>
-                                    <td class="py-2">{{ $tx->category->name ?? '—' }}</td>
-                                    <td class="py-2">{{ $tx->description }}</td>
-                                    <td class="py-2 text-right font-semibold">₱{{ number_format($tx->amount, 2) }}</td>
+                                    <td class="py-2 px-4">{{ \Carbon\Carbon::parse($tx->date)->format('M d, Y') }}</td>
+                                    <td class="py-2 px-4">{{ $tx->description ?? '—' }}</td>
+                                    <td class="py-2 px-4">{{ $tx->type ?? '—' }}</td>
+                                    <td class="py-2 px-4 text-right font-semibold text-red-600">
+                                        -₱{{ number_format($tx->amount, 2) }}</td>
                                 </tr>
                             @empty
                                 <tr>
@@ -69,49 +68,7 @@
                 </div>
             </div>
 
-            <!-- Modal -->
-            <div class="modal fade" id="addExpenseModal" tabindex="-1" aria-labelledby="addExpenseModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <form action="{{ route('transactions.store') }}" method="POST">
-                            @csrf
-                            <div class="modal-header">
-                                <h5 class="modal-title">Record New Expense</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body space-y-3">
-                                <div>
-                                    <label class="block text-sm">Category</label>
-                                    <select name="category_id" class="form-select" required>
-                                        <option value="">Select Category</option>
-                                        @foreach(App\Models\Category::all() as $cat)
-                                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm">Description</label>
-                                    <input type="text" name="description" class="form-control" required>
-                                </div>
-                                <div>
-                                    <label class="block text-sm">Amount</label>
-                                    <input type="number" step="0.01" name="amount" class="form-control" required>
-                                </div>
-                                <div>
-                                    <label class="block text-sm">Date</label>
-                                    <input type="date" name="date" class="form-control" value="{{ now()->toDateString() }}"
-                                        required>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Save Expense</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            @include('transactions.add-expense-modal')
 
         </div>
     </div>

@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('transaction_id')->constrained()->cascadeOnDelete();
             $table->foreignId('account_id')->constrained()->cascadeOnDelete();
-            $table->enum('side', ['debit', 'credit']);
+            $table->enum('entry_type', ['debit', 'credit']);
             $table->decimal('amount', 14, 2);
             $table->timestamps();
         });
